@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CTET SST Portal - Admin Panel</title>
+  <title>GTEST ADMIN</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,23 +14,39 @@
     .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     .render-multiline { white-space: pre-line; word-break: break-word; }
+
     @media print {
       body * { visibility: hidden; }
       #adminPrintScoreCard, #adminPrintScoreCard * { visibility: visible; }
-      #adminPrintScoreCard { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
+      #adminPrintScoreCard {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        display: block !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
     }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col antialiased">
 
-  <!-- Header with Mobile Navigation Ready -->
+  <!-- Header -->
   <header class="bg-slate-900 text-white shadow-md sticky top-0 z-30">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="openModuleHub()">
         <span class="p-2 bg-indigo-600 rounded-xl text-lg">⚙️</span>
         <div>
-          <h1 class="text-base md:text-lg font-bold leading-tight">CTET SST Portal • Admin Panel</h1>
-          <p class="text-[11px] text-slate-400">Manage Sets, PYQ, Chapters & PDF Notes</p>
+          <h1 class="text-base md:text-lg font-bold leading-tight">GTET • Admin </h1>
+          <p class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+            live now
+          </p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -55,7 +71,7 @@
         <b id="statChapterCount" class="text-2xl font-black text-slate-800">0</b>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-500 block">Total Questions Bank</span>
+        <span class="text-xs text-slate-500 block">Total Questions (Cloud)</span>
         <b id="statQuesCount" class="text-2xl font-black text-emerald-600">0</b>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
@@ -73,13 +89,13 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Module 1: Add Single Question -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Module 1: Upload Question -->
         <div onclick="openWorkspace('tabAddQ')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-indigo-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
           <div>
             <div class="w-11 h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">➕</div>
-            <h3 class="font-bold text-slate-800 text-sm">Upload Question (Set / PYQ / Chapter)</h3>
-            <p class="text-xs text-slate-500 mt-1">Sirf Set, sirf PYQ ya Chapter ke liye alag se question add karein.</p>
+            <h3 class="font-bold text-slate-800 text-sm">Upload Question</h3>
+            <p class="text-xs text-slate-500 mt-1">Mock Set, PYQ ya Chapter me single sawal dalein with Custom Timer support[span_2](start_span)[span_2](end_span).</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-indigo-600">
             <span>Add Question</span> <span>→</span>
@@ -91,7 +107,7 @@
           <div>
             <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">⚡</div>
             <h3 class="font-bold text-slate-800 text-sm">Auto Parse Exam Questions</h3>
-            <p class="text-xs text-slate-500 mt-1">Statement aur multiline CTET format question text ko direct import karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Mock Sets, PYQ ya Chapter wise bulk questions direct paste karke import karein[span_3](start_span)[span_3](end_span).</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
             <span>Auto Parse</span> <span>→</span>
@@ -103,46 +119,46 @@
           <div>
             <div class="w-11 h-11 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📋</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage Questions</h3>
-            <p class="text-xs text-slate-500 mt-1">Sets, PYQ aur Chapters ke questions search aur delete karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Sets, PYQ aur Chapters ke sawal cloud database se search ya remove karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700">
             <span>Questions Bank (<span id="hubQCount">0</span>)</span> <span>→</span>
           </div>
         </div>
 
-        <!-- Module 4: Student Score Cards -->
-        <div onclick="openWorkspace('tabStudentRecords')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
+        <!-- Module 4: Student Profile Management -->
+        <div onclick="openWorkspace('tabProfileManagement')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-violet-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
           <div>
-            <div class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">🎓</div>
-            <h3 class="font-bold text-slate-800 text-sm">Student Score Cards (PDF)</h3>
-            <p class="text-xs text-slate-500 mt-1">Students ke test attempts check karein aur certified PDF download karein.</p>
+            <div class="w-11 h-11 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">👤</div>
+            <h3 class="font-bold text-slate-800 text-sm">Profile Management</h3>
+            <p class="text-xs text-slate-500 mt-1">Student profile details aur test score history (SET, PYQ, Chapter) inspect karein.</p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-600">
-            <span>Open Records</span> <span>→</span>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-violet-600">
+            <span>Open Profile Management</span> <span>→</span>
           </div>
         </div>
 
-        <!-- Module 5: Manage PDF Notes -->
+        <!-- Module 5: Score Cards & Single-Page PDF -->
+        <div onclick="openWorkspace('tabStudentRecords')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
+          <div>
+            <div class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">🎓</div>
+            <h3 class="font-bold text-slate-800 text-sm">Download Score Card (PDF)</h3>
+            <p class="text-xs text-slate-500 mt-1">1-Page Certified Score Card with photo, SET, PYQ & Chapter breakdown.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-600">
+            <span>Score Cards</span> <span>→</span>
+          </div>
+        </div>
+
+        <!-- Module 6: Manage PDF Notes -->
         <div onclick="openWorkspace('tabManageNotes')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
           <div>
             <div class="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📑</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage PDF Notes</h3>
-            <p class="text-xs text-slate-500 mt-1">Google Drive PDF links ko add aur update karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Chapter select karein, title auto-generate hoga aur Drive link save karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-amber-600">
             <span>Manage Notes</span> <span>→</span>
-          </div>
-        </div>
-
-        <!-- Module 6: Bulk Upload JSON -->
-        <div onclick="openWorkspace('tabBulkQ')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-cyan-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
-          <div>
-            <div class="w-11 h-11 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📦</div>
-            <h3 class="font-bold text-slate-800 text-sm">Bulk JSON Upload</h3>
-            <p class="text-xs text-slate-500 mt-1">Structured JSON format me questions upload karein.</p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-cyan-600">
-            <span>Bulk JSON</span> <span>→</span>
           </div>
         </div>
 
@@ -151,19 +167,19 @@
           <div>
             <div class="w-11 h-11 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📚</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage Subjects</h3>
-            <p class="text-xs text-slate-500 mt-1">Naye subject add karein ya status change karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Naye subject (e.g. Human Geography) add karein ya status toggle karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-purple-600">
             <span>Manage Subjects</span> <span>→</span>
           </div>
         </div>
 
-        <!-- Module 8: Manage Chapters -->
+        <!-- Module 8: Manage Chapters & Custom Classes -->
         <div onclick="openWorkspace('tabAddChapter')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-rose-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
           <div>
             <div class="w-11 h-11 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📖</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage Chapters & Classes</h3>
-            <p class="text-xs text-slate-500 mt-1">Class-wise naye chapters syllabus me add karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Class 6, 7, 8... 12 ya Graduation me naye chapters add karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-rose-600">
             <span>Manage Chapters</span> <span>→</span>
@@ -172,34 +188,50 @@
       </div>
     </section>
 
-    <!-- SECTION TITLE BAR WITH BREADCRUMB -->
+    <!-- SECTION TITLE BAR -->
     <div id="workspaceHeader" class="hidden flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+      <button onclick="openModuleHub()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition">
+        <span>←</span> <span>Back to Modules</span>
+      </button>
       <span id="activeWorkspaceTitle" class="text-xs font-bold text-slate-700"></span>
-      <span class="text-[11px] text-slate-400 font-medium">Use Phone Back Button to return</span>
     </div>
 
-    <!-- 1. ADD SINGLE QUESTION TAB (INDEPENDENT SET / PYQ / CHAPTER TARGET) -->
+    <!-- 1. UPLOAD QUESTION TAB -->
     <section id="tabAddQ" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       <div class="border-b border-slate-100 pb-3">
-        <h2 class="text-base font-bold text-slate-800">Add Question</h2>
-        <p class="text-xs text-slate-500">Chunein ki question sirf Mock Set me jana chahiye, sirf PYQ me, ya Chapter me.</p>
+        <h2 class="text-base font-bold text-slate-800">Upload Question (Set / PYQ / Chapter)</h2>
+        <p class="text-xs text-slate-500">Chunein ki sawal Full Mock Set, PYQ Paper ya specific Chapter test me dalna hai[span_4](start_span)[span_4](end_span).</p>
       </div>
 
       <form id="formAddQuestion" onsubmit="handleSaveQuestion(event)" class="space-y-4">
-        <!-- Target Type Selection -->
         <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200">
-          <label class="block text-xs font-bold text-indigo-900 mb-1.5">Sawal Kahan Upload Karna Hai? (Destination) *</label>
+          <label class="block text-xs font-bold text-indigo-900 mb-1.5">Destination *</label>
           <select id="qDestinationType" onchange="toggleDestinationFields()" class="w-full p-2.5 bg-white border border-indigo-300 rounded-xl text-xs font-bold text-indigo-950 focus:ring-2 focus:ring-indigo-500">
-            <option value="set">Sirf FULL MOCK SET me Dalein (Kisi Chapter me nahi jayega)</option>
-            <option value="pyq">Sirf PREVIOUS YEAR QUESTION (PYQ) me Dalein</option>
-            <option value="chapter">CHAPTER WISE PRACTICE me Dalein</option>
+            <option value="set">Full Mock Set (Set 1 to Set 10)</option>
+            <option value="pyq">Previous Year Question Paper (PYQ 2021 – 2026)</option>
+            <option value="chapter">Chapter Wise Practice Test</option>
           </select>
         </div>
 
-        <!-- SET SELECTION ROW -->
-        <div id="fieldSetSelect" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- DYNAMIC CHAPTER SELECT FIELDS -->
+        <div id="fieldChapterGroup" class="hidden bg-indigo-50/40 p-4 rounded-xl border border-indigo-100 grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Mock Set Chunein *</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Select Subject *</label>
+            <select id="qSubject" onchange="updateUploadClassDropdown()" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Select Class *</label>
+            <select id="qClass" onchange="updateUploadChapterDropdown()" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Select Chapter *</label>
+            <select id="qChapter" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold"></select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div id="fieldSetSelect">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Mock Set Number *</label>
             <select id="qMockSetNum" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
               <option value="1">Full Mock Test - Set 1</option>
               <option value="2">Full Mock Test - Set 2</option>
@@ -213,16 +245,9 @@
               <option value="10">Full Mock Test - Set 10</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject Tag (For Reference)</label>
-            <select id="qSetSubjectTag" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
-          </div>
-        </div>
 
-        <!-- PYQ SELECTION ROW -->
-        <div id="fieldPyqSelect" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">PYQ Year Chunein *</label>
+          <div id="fieldPyqSelect" class="hidden">
+            <label class="block text-xs font-bold text-slate-700 mb-1">PYQ Exam Year *</label>
             <select id="qPyqYear" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
               <option value="2021">CTET Paper 2 - 2021</option>
               <option value="2022">CTET Paper 2 - 2022</option>
@@ -232,65 +257,47 @@
               <option value="2026">CTET Paper 2 - 2026</option>
             </select>
           </div>
+
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject Tag (For Reference)</label>
-            <select id="qPyqSubjectTag" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Test Duration / Timer (in Minutes) *</label>
+            <input type="number" id="qCustomTimer" required min="1" max="180" value="25" placeholder="Jaise: 25 ya 60" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500">
+            <p class="text-[10px] text-slate-400 mt-0.5">Admin jo time yahan set karega, test me wahi timer chalega.</p>
           </div>
         </div>
 
-        <!-- CHAPTER SELECTION ROW -->
-        <div id="fieldChapterSelect" class="hidden grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject *</label>
-            <select id="qSubject" onchange="updateChapterDropdown()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Class *</label>
-            <select id="qClass" onchange="updateChapterDropdown()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Chapter *</label>
-            <select id="qChapter" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
-          </div>
-        </div>
-
-        <!-- QUESTION TEXT AREA (SUPPORTS MULTILINE & CTET STATEMENTS) -->
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">
-            Question Text & Statements (Supports CTET Multiline Format) *
+            Question & Statements (CTET Pattern Statement 1, 2, 3...) *
           </label>
           <textarea id="qText" rows="6" required placeholder="Jaise ki:
 Q1. वैदिक साहित्य के अध्ययन के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
 1. ऋग्वेद में मुख्यतः देवताओं की स्तुति में रचित सूक्त हैं।
 2. उत्तर वैदिक काल में कृषि का महत्व बढ़ा।
-3. ऋग्वेद में लोहे के व्यापक उपयोग के स्पष्ट प्रमाण मिलते हैं।
-सही विकल्प चुनिए:" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500"></textarea>
-          <p class="text-[11px] text-slate-500 mt-1">Aap line breaks, statements (1, 2, 3), ya paragraph jaisa chahein waisa type ya paste kar sakte hain.</p>
+सही विकल्प चुनिए।" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500"></textarea>
         </div>
 
-        <!-- 4 OPTIONS -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (A) *</label>
-            <textarea id="qOptA" rows="2" required placeholder="Option (A) ka content..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptA" rows="2" required placeholder="केवल 1" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (B) *</label>
-            <textarea id="qOptB" rows="2" required placeholder="Option (B) ka content..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptB" rows="2" required placeholder="केवल 2" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (C) *</label>
-            <textarea id="qOptC" rows="2" required placeholder="Option (C) ka content..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptC" rows="2" required placeholder="दोनों 1 और 2" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (D) *</label>
-            <textarea id="qOptD" rows="2" required placeholder="Option (D) ka content..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptD" rows="2" required placeholder="कोई नहीं" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-emerald-700 mb-1">Correct Option *</label>
+            <label class="block text-xs font-bold text-emerald-700 mb-1">Correct Answer *</label>
             <select id="qCorrect" class="w-full p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-900">
               <option value="0">Option (A) is Correct</option>
               <option value="1">Option (B) is Correct</option>
@@ -299,60 +306,56 @@ Q1. वैदिक साहित्य के अध्ययन के स�
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Detailed Explanation / NCERT Reference</label>
-            <textarea id="qExplanation" rows="2" placeholder="Vyakhya aur NCERT pustak ka reference..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Detailed Explanation (Exp:) *</label>
+            <textarea id="qExplanation" rows="2" placeholder="ऋग्वेद में देवताओं की स्तुति में रचित सूक्त हैं तथा उत्तर वैदिक काल में कृषि मुख्य पेशा बनी..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
         </div>
 
         <div class="pt-2 flex justify-end">
           <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow flex items-center gap-1.5">
-            <span>💾 Save Question</span>
+            <span>💾 Save to Cloud</span>
           </button>
         </div>
       </form>
     </section>
 
-    <!-- 2. AUTO PARSER TAB (SUPPORTS STATEMENTS & STATEMENT OPTIONS) -->
+    <!-- 2. AUTO PARSE EXAM QUESTIONS TAB (CHAPTER OPTION ADDED HERE) -->
     <section id="tabPdfParser" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       <div class="border-b border-slate-100 pb-3">
         <h2 class="text-base font-bold text-slate-800">⚡ Auto Parse Exam Questions</h2>
-        <p class="text-xs text-slate-500">Multiline statements aur CTET question papers direct paste karke generate karein.</p>
+        <p class="text-xs text-slate-500">Statement wale questions aur options text ko automatic parse karein[span_5](start_span)[span_5](end_span).</p>
       </div>
 
       <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 space-y-3">
-        <label class="block text-xs font-bold text-indigo-900">Target Destination Chunein *</label>
-        <select id="parseDestinationType" onchange="toggleParseDestinationFields()" class="w-full p-2 bg-white border border-indigo-300 rounded-lg text-xs font-bold text-indigo-950">
-          <option value="set">Sirf FULL MOCK SET me Dalein</option>
-          <option value="pyq">Sirf PYQ me Dalein</option>
-          <option value="chapter">CHAPTER WISE me Dalein</option>
-        </select>
-
-        <div id="parseFieldMock" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Mock Set</label>
-            <select id="parseMockSetNum" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold">
-              <option value="1">Full Mock Test - Set 1</option>
-              <option value="2">Full Mock Test - Set 2</option>
-              <option value="3">Full Mock Test - Set 3</option>
-              <option value="4">Full Mock Test - Set 4</option>
-              <option value="5">Full Mock Test - Set 5</option>
-              <option value="6">Full Mock Test - Set 6</option>
-              <option value="7">Full Mock Test - Set 7</option>
-              <option value="8">Full Mock Test - Set 8</option>
-              <option value="9">Full Mock Test - Set 9</option>
-              <option value="10">Full Mock Test - Set 10</option>
+            <label class="block text-xs font-bold text-indigo-900 mb-1">Target Destination *</label>
+            <select id="parseDestinationType" onchange="toggleParseDest()" class="w-full p-2.5 bg-white border border-indigo-300 rounded-lg text-xs font-bold">
+              <option value="set">Full Mock Set</option>
+              <option value="pyq">PYQ Year</option>
+              <option value="chapter">Chapter Wise Practice Test</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject Tag</label>
-            <select id="parseMockSubTag" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold"></select>
-          </div>
-        </div>
 
-        <div id="parseFieldPyq" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
+          <div id="parseMockBox">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Mock Set</label>
+            <select id="parseMockSetNum" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold">
+              <option value="1">Set 1</option>
+              <option value="2">Set 2</option>
+              <option value="3">Set 3</option>
+              <option value="4">Set 4</option>
+              <option value="5">Set 5</option>
+              <option value="6">Set 6</option>
+              <option value="7">Set 7</option>
+              <option value="8">Set 8</option>
+              <option value="9">Set 9</option>
+              <option value="10">Set 10</option>
+            </select>
+          </div>
+
+          <div id="parsePyqBox" class="hidden">
             <label class="block text-xs font-bold text-slate-700 mb-1">PYQ Year</label>
-            <select id="parsePyqYear" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold">
+            <select id="parsePyqYear" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold">
               <option value="2021">2021</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>
@@ -361,39 +364,41 @@ Q1. वैदिक साहित्य के अध्ययन के स�
               <option value="2026">2026</option>
             </select>
           </div>
+
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject Tag</label>
-            <select id="parsePyqSubTag" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold"></select>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Timer (Minutes)</label>
+            <input type="number" id="parseTimerMinutes" value="25" min="1" max="180" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-indigo-900">
           </div>
         </div>
 
-        <div id="parseFieldChapter" class="hidden grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- NEW: Auto Parse Chapter Selection Row -->
+        <div id="parseChapterGroup" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-indigo-200">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject</label>
-            <select id="parseSubject" onchange="updateParseChapterDropdown()" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold"></select>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Select Subject *</label>
+            <select id="parseSubject" onchange="updateParseClassDropdown()" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold"></select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Class</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Select Class *</label>
             <select id="parseClass" onchange="updateParseChapterDropdown()" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold"></select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Chapter</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Select Chapter *</label>
             <select id="parseChapter" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold"></select>
           </div>
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">Raw Exam Question Text (Statements Included):</label>
-        <textarea id="rawPdfTextInput" rows="8" placeholder="Jaise CTET question paper me hota hai:
-1. वैदिक साहित्य के संदर्भ में विचार कीजिए:
+        <label class="block text-xs font-bold text-slate-700 mb-1">Raw Exam Question Text:</label>
+        <textarea id="rawPdfTextInput" rows="8" placeholder="1. वैदिक साहित्य के संदर्भ में विचार कीजिए:
 1. ऋग्वेद में स्तुतियां हैं।
 2. कृषि का महत्व बढ़ा।
 (A) केवल 1
 (B) केवल 2
 (C) दोनों 1 और 2
 (D) कोई नहीं
-Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500"></textarea>
+Ans: C
+Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500"></textarea>
       </div>
 
       <div class="flex items-center justify-between">
@@ -407,48 +412,62 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
         <div class="flex items-center justify-between">
           <h3 class="text-xs font-bold text-slate-800">Parsed Preview</h3>
           <button onclick="uploadParsedQuestions()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition">
-            🚀 Save Parsed Questions
+            🚀 Save to Cloud
           </button>
         </div>
         <div id="parsedCardsContainer" class="space-y-2.5 max-h-80 overflow-y-auto custom-scroll pr-1"></div>
       </div>
     </section>
 
-    <!-- 3. VIEW & MANAGE QUESTIONS TAB -->
-    <section id="tabManageQ" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
-        <div>
-          <h2 class="text-base font-bold text-slate-800">All Questions Bank</h2>
-          <p class="text-xs text-slate-500">Filter, search, inspect sequence or delete questions.</p>
+    <!-- 3. PROFILE MANAGEMENT TAB -->
+    <section id="tabProfileManagement" class="hidden space-y-4">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div>
+            <h2 class="text-base font-bold text-slate-800">👤 Student Profile & History Management</h2>
+            <p class="text-xs text-slate-500">Student ke profile data aur test score history ki full report.</p>
+          </div>
+          <button onclick="renderProfileManagement()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">
+            🔄 Refresh
+          </button>
         </div>
-        <button onclick="handleDeleteAllQuestions()" class="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl text-xs font-bold transition">
-          🗑️ Clear All Questions
-        </button>
-      </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <input type="text" id="searchQText" oninput="renderQuestionsList()" placeholder="Search by question text..." class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
-        <select id="filterTargetGroup" onchange="renderQuestionsList()" class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
-          <option value="all">All Targets (Sets, PYQ, Chapters)</option>
-          <option value="set">Only Mock Sets</option>
-          <option value="pyq">Only PYQ</option>
-          <option value="chapter">Only Chapters</option>
-        </select>
-        <select id="filterSubject" onchange="renderQuestionsList()" class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
-          <option value="all">All Subjects</option>
-        </select>
-      </div>
+        <div id="adminStudentProfileCard" class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-wrap items-center gap-4">
+          <div class="w-16 h-16 rounded-full overflow-hidden bg-indigo-100 border-2 border-indigo-500 flex items-center justify-center shrink-0">
+            <img id="adminProfileImg" src="" alt="Profile" class="w-full h-full object-cover hidden">
+            <span id="adminProfileImgPlaceholder" class="text-2xl font-bold text-indigo-700">👤</span>
+          </div>
+          <div class="space-y-0.5 text-xs">
+            <h3 id="adminStudentName" class="text-sm font-bold text-slate-900">Student Name</h3>
+            <p id="adminStudentEmail" class="text-slate-600">Email: —</p>
+            <p id="adminStudentMobile" class="text-slate-600">Mobile: —</p>
+          </div>
+        </div>
 
-      <div id="questionsContainer" class="space-y-3 max-h-[600px] overflow-y-auto custom-scroll pr-1"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="bg-indigo-50/50 p-3.5 rounded-xl border border-indigo-200 space-y-2">
+            <span class="text-xs font-bold text-indigo-900 block border-b border-indigo-200 pb-1">Full Mock Sets Performance</span>
+            <div id="adminSetsHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+          </div>
+          <div class="bg-purple-50/50 p-3.5 rounded-xl border border-purple-200 space-y-2">
+            <span class="text-xs font-bold text-purple-900 block border-b border-purple-200 pb-1">PYQ Papers Performance</span>
+            <div id="adminPyqHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+          </div>
+          <div class="bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-200 space-y-2">
+            <span class="text-xs font-bold text-emerald-900 block border-b border-emerald-200 pb-1">Chapter Tests Performance</span>
+            <div id="adminChapterHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- 4. STUDENT PERFORMANCE & SCORE CARDS TAB -->
+    <!-- 4. STUDENT SCORE CARDS TAB -->
     <section id="tabStudentRecords" class="hidden space-y-4">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
-            <h2 class="text-base font-bold text-slate-800">🎓 Student Score Cards & Official PDF Generator</h2>
-            <p class="text-xs text-slate-500">Students ke test results inspect karein aur verified PDF download karein.</p>
+            <h2 class="text-base font-bold text-slate-800">🎓 Certified Student Score Cards</h2>
+            <p class="text-xs text-slate-500">Official certified PDF score card generator.</p>
           </div>
           <button onclick="renderStudentRecords()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">
             🔄 Refresh Records
@@ -463,38 +482,33 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="border-b border-slate-100 pb-3">
           <h2 class="text-base font-bold text-slate-800">Add Chapter PDF Notes</h2>
-          <p class="text-xs text-slate-500">Google Drive shareable link paste karein.</p>
+          <p class="text-xs text-slate-500">Subject aur Class select karein, title apne aap assign ho jayega.</p>
         </div>
 
         <form id="formAddNote" onsubmit="handleSaveNote(event)" class="space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Subject</label>
-              <select id="noteSubject" onchange="updateNoteChapterDropdown()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
+              <select id="noteSubject" onchange="updateNoteClassDropdown()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Class</label>
               <select id="noteClass" onchange="updateNoteChapterDropdown()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Chapter</label>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Chapter (Auto-Title Assigned)</label>
               <select id="noteChapter" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Note Title</label>
-            <input type="text" id="noteTitle" required placeholder="e.g. Chapter 2: आरंभिक मानव एवं पाषाण काल (सच‍ित्र नोट्स)" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
-          </div>
-
-          <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Google Drive Link / URL *</label>
-            <input type="text" id="notePdfUrl" required placeholder="Paste Google Drive link here..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono">
+            <input type="text" id="notePdfUrl" required placeholder="https://drive.google.com/file/d/.../view" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono">
           </div>
 
           <div class="flex justify-end">
             <button type="submit" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition shadow">
-              💾 Save PDF Note
+              💾 Save PDF Note to Cloud
             </button>
           </div>
         </form>
@@ -506,22 +520,29 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       </div>
     </section>
 
-    <!-- 6. BULK JSON UPLOAD TAB -->
-    <section id="tabBulkQ" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-      <div class="border-b border-slate-100 pb-3">
-        <h2 class="text-base font-bold text-slate-800">Bulk Upload Questions (JSON Array)</h2>
-        <p class="text-xs text-slate-500">Target type specify karein: <code>"targetType": "set"</code>, <code>"mockSet": 1</code> ya <code>"targetType": "chapter"</code></p>
-      </div>
-
-      <div>
-        <textarea id="bulkJsonInput" rows="10" placeholder='[{"targetType": "set", "mockSet": 1, "text": "Q1 text...", "options": ["A","B","C","D"], "correctIndex": 0, "explanation": "NCERT reference"}]' class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-xl text-xs"></textarea>
-      </div>
-
-      <div class="flex justify-end">
-        <button onclick="handleBulkUpload()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow transition">
-          🚀 Upload JSON
+    <!-- 6. VIEW & MANAGE QUESTIONS TAB -->
+    <section id="tabManageQ" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <div>
+          <h2 class="text-base font-bold text-slate-800">All Questions Bank (Cloud Database)</h2>
+          <p class="text-xs text-slate-500">Filter, search, inspect sequence or delete questions.</p>
+        </div>
+        <button onclick="handleDeleteAllQuestions()" class="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl text-xs font-bold transition">
+          🗑️ Clear All Questions
         </button>
       </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <input type="text" id="searchQText" oninput="renderQuestionsList()" placeholder="Search question text..." class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
+        <select id="filterTargetGroup" onchange="renderQuestionsList()" class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
+          <option value="all">All Targets (Mock Sets, PYQ & Chapters)</option>
+          <option value="set">Only Mock Sets</option>
+          <option value="pyq">Only PYQ</option>
+          <option value="chapter">Only Chapters</option>
+        </select>
+      </div>
+
+      <div id="questionsContainer" class="space-y-3 max-h-[600px] overflow-y-auto custom-scroll pr-1"></div>
     </section>
 
     <!-- 7. MANAGE SUBJECTS TAB -->
@@ -529,25 +550,25 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="border-b border-slate-100 pb-3">
           <h2 class="text-base font-bold text-slate-800">Create New Subject</h2>
-          <p class="text-xs text-slate-500">Custom subjects add karein.</p>
+          <p class="text-xs text-slate-500">Naye subject add karein, ye turant Cloud par save hoga.</p>
         </div>
 
         <form id="formAddSubject" onsubmit="handleSaveSubject(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject Key</label>
-            <input type="text" id="subKeyInput" required placeholder="e.g. Economics" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Subject Key *</label>
+            <input type="text" id="subKeyInput" required placeholder="Human_Geography" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-bold text-slate-700 mb-1">Display Title</label>
-            <input type="text" id="subTitleInput" required placeholder="e.g. Economics (Our Economy)" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Display Title *</label>
+            <input type="text" id="subTitleInput" required placeholder="Human Geography (मानव भूगोल)" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Icon / Emoji</label>
-            <input type="text" id="subIconInput" required value="📈" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
+            <input type="text" id="subIconInput" required value="🌍" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
           </div>
           <div class="sm:col-span-4 flex justify-end">
             <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow">
-              ➕ Add Subject
+              ➕ Add Subject to Cloud
             </button>
           </div>
         </form>
@@ -559,30 +580,30 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       </div>
     </section>
 
-    <!-- 8. MANAGE CHAPTERS TAB -->
+    <!-- 8. MANAGE CHAPTERS & CUSTOM CLASSES TAB -->
     <section id="tabAddChapter" class="hidden space-y-4">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="border-b border-slate-100 pb-3">
           <h2 class="text-base font-bold text-slate-800">Add New Chapter / Class</h2>
-          <p class="text-xs text-slate-500">Chapters add karein.</p>
+          <p class="text-xs text-slate-500">Class me 6, 7, 8... 12 ya <b>Graduation</b> kuch bhi type kar sakte hain.</p>
         </div>
 
         <form id="formAddChapter" onsubmit="handleSaveChapter(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Subject</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Subject *</label>
             <select id="chapSubjectSelect" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold"></select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Class Number</label>
-            <input type="number" id="chapClassInput" required min="1" max="12" value="6" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Class / Level *</label>
+            <input type="text" id="chapClassInput" required placeholder="e.g. 9, 10, 11, 12, Graduation" value="6" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-bold text-slate-700 mb-1">Chapter Name</label>
-            <input type="text" id="chapNameInput" required placeholder="e.g. Chapter 7: Ashoka, The Emperor" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Chapter Name *</label>
+            <input type="text" id="chapNameInput" required placeholder="Chapter 1: Nature and Scope" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium">
           </div>
           <div class="sm:col-span-4 flex justify-end">
             <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow">
-              ➕ Add Chapter
+              ➕ Add Chapter to Cloud
             </button>
           </div>
         </form>
@@ -595,9 +616,6 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
             <select id="filterChapSubject" onchange="renderAllChaptersList()" class="p-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
               <option value="all">All Subjects</option>
             </select>
-            <select id="filterChapClass" onchange="renderAllChaptersList()" class="p-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold">
-              <option value="all">All Classes</option>
-            </select>
           </div>
         </div>
         <div id="allChaptersList" class="space-y-2.5 max-h-[500px] overflow-y-auto custom-scroll pr-1"></div>
@@ -606,31 +624,66 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
 
   </main>
 
-  <!-- PRINT SCORE CARD TEMPLATE -->
-  <div id="adminPrintScoreCard" class="hidden p-8 bg-white text-slate-900 border-2 border-slate-800 m-4 rounded-xl">
-    <div class="text-center border-b-2 border-indigo-900 pb-4 mb-4">
-      <h1 class="text-2xl font-black text-indigo-950">CTET SST PREPARATION PORTAL</h1>
-      <p class="text-xs font-semibold text-slate-600">Official Student Performance Report & Score Card</p>
+  <!-- PRINT SCORE CARD -->
+  <div id="adminPrintScoreCard" class="hidden bg-white text-slate-900 border-2 border-slate-800 p-6 rounded-xl">
+    <div class="text-center border-b-2 border-indigo-900 pb-3 mb-3">
+      <h1 class="text-xl font-black text-indigo-950 uppercase">CTET SST OFFICIAL SCORE CARD</h1>
+      <p class="text-[11px] font-semibold text-slate-600">Verified central Portal Record</p>
     </div>
-    <div class="grid grid-cols-2 gap-4 text-xs mb-5 p-3 bg-slate-50 rounded-lg border border-slate-200">
-      <div><strong>Student Name:</strong> <span id="adminPdfName">—</span></div>
-      <div><strong>Student Email:</strong> <span id="adminPdfEmail">—</span></div>
-      <div><strong>Test / Chapter:</strong> <span id="adminPdfTestTitle">—</span></div>
-      <div><strong>Date & Time:</strong> <span id="adminPdfDate">—</span></div>
+
+    <div class="flex items-center justify-between gap-4 p-3 bg-slate-50 rounded-xl border border-slate-300 mb-4 text-xs">
+      <div class="flex items-center gap-3">
+        <div class="w-16 h-16 rounded-lg overflow-hidden border border-slate-400 bg-indigo-50 flex items-center justify-center shrink-0">
+          <img id="printCardPhoto" src="" alt="Photo" class="w-full h-full object-cover hidden">
+          <span id="printCardPhotoFallback" class="text-2xl">👤</span>
+        </div>
+        <div class="space-y-0.5">
+          <div><strong>Candidate Name:</strong> <span id="printCardName">—</span></div>
+          <div><strong>Registered Email:</strong> <span id="printCardEmail">—</span></div>
+          <div><strong>Mobile Number:</strong> <span id="printCardMobile">—</span></div>
+        </div>
+      </div>
+      <div class="text-right space-y-0.5">
+        <div><strong>Exam / Test:</strong> <span id="printCardTestTitle" class="text-indigo-900 font-bold">—</span></div>
+        <div><strong>Attempt Date:</strong> <span id="printCardDate">—</span></div>
+        <div><strong>Certificate ID:</strong> #CTET-<span id="printCardId">1001</span></div>
+      </div>
     </div>
-    <div class="grid grid-cols-4 gap-2 text-center my-4">
-      <div class="p-3 border rounded-lg bg-indigo-50 font-bold">Total Questions<br><span id="adminPdfTotal" class="text-lg text-indigo-700">0</span></div>
-      <div class="p-3 border rounded-lg bg-emerald-50 font-bold">Correct<br><span id="adminPdfCorrect" class="text-lg text-emerald-700">0</span></div>
-      <div class="p-3 border rounded-lg bg-rose-50 font-bold">Incorrect<br><span id="adminPdfWrong" class="text-lg text-rose-700">0</span></div>
-      <div class="p-3 border rounded-lg bg-amber-50 font-bold">Accuracy<br><span id="adminPdfAcc" class="text-lg text-amber-700">0%</span></div>
+
+    <div class="grid grid-cols-4 gap-2 text-center text-xs mb-4">
+      <div class="p-2.5 border rounded-lg bg-indigo-50 font-bold">Total Marks<br><span id="printCardTotal" class="text-lg text-indigo-700">0</span></div>
+      <div class="p-2.5 border rounded-lg bg-emerald-50 font-bold">Correct<br><span id="printCardCorrect" class="text-lg text-emerald-700">0</span></div>
+      <div class="p-2.5 border rounded-lg bg-rose-50 font-bold">Incorrect<br><span id="printCardWrong" class="text-lg text-rose-700">0</span></div>
+      <div class="p-2.5 border rounded-lg bg-amber-50 font-bold">Accuracy<br><span id="printCardAcc" class="text-lg text-amber-700">0%</span></div>
     </div>
-    <div class="mt-8 pt-4 border-t border-slate-300 flex justify-between text-[11px] text-slate-500">
-      <span>Issued & Verified by Admin Control Center</span>
-      <span>Official Record ID: #CTET-<span id="adminPdfRecordId">001</span></span>
+
+    <div class="space-y-2 mb-4 text-xs">
+      <h3 class="font-bold text-slate-800 border-b border-slate-300 pb-1">Section-Wise Breakdown</h3>
+      <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+        <div class="p-2 border rounded bg-indigo-50/60">
+          <b class="block text-indigo-900">MOCK SETS</b>
+          <span id="printCardSetScore">Attempted: 0</span>
+        </div>
+        <div class="p-2 border rounded bg-purple-50/60">
+          <b class="block text-purple-900">PYQ PAPERS</b>
+          <span id="printCardPyqScore">Attempted: 0</span>
+        </div>
+        <div class="p-2 border rounded bg-emerald-50/60">
+          <b class="block text-emerald-900">CHAPTER PRACTICE</b>
+          <span id="printCardChapterScore">Attempted: 0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-500">
+      <span>Verified by CTET Exam Control Portal</span>
+      <span>Single-Page Certified Official Document</span>
     </div>
   </div>
 
   <script>
+    const FIREBASE_BASE_URL = 'https://ctet-sst-portal-default-rtdb.firebaseio.com';
+
     const DEFAULT_APP_DATA = {
       History: {
         title: 'History (Our Pasts I, II, III)',
@@ -639,24 +692,7 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
         classes: {
           6: [
             { id: 'h6_1', name: 'Chapter 1: What, Where, How and When?' },
-            { id: 'h6_2', name: 'Chapter 2: From Hunting-Gathering to Growing Food' },
-            { id: 'h6_3', name: 'Chapter 3: In the Earliest Cities' },
-            { id: 'h6_4', name: 'Chapter 4: What Books and Burials Tell Us' },
-            { id: 'h6_5', name: 'Chapter 5: Kingdoms, Kings and an Early Republic' },
-            { id: 'h6_6', name: 'Chapter 6: New Questions and Ideas' }
-          ],
-          7: [
-            { id: 'h7_1', name: 'Chapter 1: Tracing Changes Through a Thousand Years' },
-            { id: 'h7_2', name: 'Chapter 2: New Kings and Kingdoms' },
-            { id: 'h7_3', name: 'Chapter 3: The Delhi Sultans' },
-            { id: 'h7_4', name: 'Chapter 4: The Mughal Empire' }
-          ],
-          8: [
-            { id: 'h8_1', name: 'Chapter 1: How, When and Where' },
-            { id: 'h8_2', name: 'Chapter 2: From Trade to Territory' },
-            { id: 'h8_3', name: 'Chapter 3: Ruling the Countryside' },
-            { id: 'h8_4', name: 'Chapter 4: Tribals, Dikus and the Vision of a Golden Age' },
-            { id: 'h8_5', name: 'Chapter 5: When People Rebel (1857 and After)' }
+            { id: 'h6_2', name: 'Chapter 2: From Hunting-Gathering to Growing Food' }
           ]
         }
       },
@@ -665,27 +701,7 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
         icon: '🌍',
         isActive: true,
         classes: {
-          6: [
-            { id: 'g6_1', name: 'Chapter 1: The Earth in the Solar System' },
-            { id: 'g6_2', name: 'Chapter 2: Globe: Latitudes and Longitudes' },
-            { id: 'g6_3', name: 'Chapter 3: Motions of the Earth' },
-            { id: 'g6_4', name: 'Chapter 4: Maps' },
-            { id: 'g6_5', name: 'Chapter 5: Major Domains of the Earth' }
-          ],
-          7: [
-            { id: 'g7_1', name: 'Chapter 1: Environment' },
-            { id: 'g7_2', name: 'Chapter 2: Inside Our Earth' },
-            { id: 'g7_3', name: 'Chapter 3: Our Changing Earth' },
-            { id: 'g7_4', name: 'Chapter 4: Air' },
-            { id: 'g7_5', name: 'Chapter 5: Water' }
-          ],
-          8: [
-            { id: 'g8_1', name: 'Chapter 1: Resources' },
-            { id: 'g8_2', name: 'Chapter 2: Land, Soil, Water, Natural Vegetation & Wildlife' },
-            { id: 'g8_3', name: 'Chapter 3: Agriculture' },
-            { id: 'g8_4', name: 'Chapter 4: Industries' },
-            { id: 'g8_5', name: 'Chapter 5: Human Resources' }
-          ]
+          6: [{ id: 'g6_1', name: 'Chapter 1: The Earth in the Solar System' }]
         }
       },
       Civics: {
@@ -693,69 +709,127 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
         icon: '🏛️',
         isActive: true,
         classes: {
-          6: [
-            { id: 'c6_1', name: 'Chapter 1: Understanding Diversity' },
-            { id: 'c6_2', name: 'Chapter 2: Diversity and Discrimination' },
-            { id: 'c6_3', name: 'Chapter 3: What is Government?' },
-            { id: 'c6_4', name: 'Chapter 4: Panchayati Raj' },
-            { id: 'c6_5', name: 'Chapter 5: Rural Administration' }
-          ],
-          7: [
-            { id: 'c7_1', name: 'Chapter 1: On Equality' },
-            { id: 'c7_2', name: 'Chapter 2: Role of the Government in Health' },
-            { id: 'c7_3', name: 'Chapter 3: How the State Government Works' },
-            { id: 'c7_4', name: 'Chapter 4: Growing up as Boys and Girls' }
-          ],
-          8: [
-            { id: 'c8_1', name: 'Chapter 1: The Indian Constitution' },
-            { id: 'c8_2', name: 'Chapter 2: Understanding Secularism' },
-            { id: 'c8_3', name: 'Chapter 3: Why Do We Need a Parliament?' },
-            { id: 'c8_4', name: 'Chapter 4: Judiciary' },
-            { id: 'c8_5', name: 'Chapter 5: Understanding Marginalisation' }
-          ]
+          6: [{ id: 'c6_1', name: 'Chapter 1: Understanding Diversity' }]
         }
       }
     };
 
-    let APP_DATA;
-    try {
-      const stored = localStorage.getItem('ctet_admin_app_data');
-      APP_DATA = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_APP_DATA));
-    } catch(e) {
-      APP_DATA = JSON.parse(JSON.stringify(DEFAULT_APP_DATA));
-    }
-
-    let questionsList;
-    try {
-      questionsList = JSON.parse(localStorage.getItem('ctet_admin_questions') || '[]');
-    } catch(e) {
-      questionsList = [];
-    }
-
-    let notesList;
-    try {
-      notesList = JSON.parse(localStorage.getItem('ctet_admin_notes') || '[]');
-    } catch(e) {
-      notesList = [];
-    }
-
+    let APP_DATA = JSON.parse(localStorage.getItem('ctet_admin_app_data') || JSON.stringify(DEFAULT_APP_DATA));
+    let questionsList = JSON.parse(localStorage.getItem('ctet_admin_questions') || '[]');
+    let notesList = JSON.parse(localStorage.getItem('ctet_admin_notes') || '[]');
+    let testTimersMap = JSON.parse(localStorage.getItem('ctet_admin_timers') || '{}');
     let parsedTempQuestions = [];
 
     const workspaceTitles = {
-      'tabStudentRecords': '🎓 Student Score Cards & Official PDF Generator',
-      'tabManageNotes': '📑 Manage PDF Notes',
-      'tabAddQ': '➕ Add Question (Target Specific: Set / PYQ / Chapter)',
+      'tabAddQ': '➕ Upload Question (Set / PYQ / Chapter)',
       'tabPdfParser': '⚡ Auto Parse CTET Questions',
+      'tabManageQ': '📋 Manage Questions Bank',
+      'tabProfileManagement': '👤 Profile & Test History Management',
+      'tabStudentRecords': '🎓 Student Score Cards',
+      'tabManageNotes': '📑 Manage Chapter PDF Notes',
       'tabAddSubject': '📚 Manage Subjects',
-      'tabAddChapter': '📖 Manage Chapters',
-      'tabManageQ': '📋 Questions Bank Management',
-      'tabBulkQ': '📦 Bulk Upload (JSON)'
+      'tabAddChapter': '📖 Manage Chapters'
     };
 
-    // Mobile Navigation History stack handling
     let navHistory = ['hub'];
 
-    function openWorkspace(tabId, pushHistory = true) {
+    // CLOUD SYNC FUNCTIONS
+    async function syncFromCloud() {
+      try {
+        const appRes = await fetch(FIREBASE_BASE_URL + '/app_data.json');
+        const appD = await appRes.json();
+        if (appD && Object.keys(appD).length > 0) {
+          APP_DATA = appD;
+          localStorage.setItem('ctet_admin_app_data', JSON.stringify(APP_DATA));
+        }
+
+        const qRes = await fetch(FIREBASE_BASE_URL + '/questions.json');
+        const qData = await qRes.json();
+        if (qData) {
+          questionsList = Array.isArray(qData) ? qData : Object.values(qData);
+          localStorage.setItem('ctet_admin_questions', JSON.stringify(questionsList));
+        }
+
+        const nRes = await fetch(FIREBASE_BASE_URL + '/notes.json');
+        const nData = await nRes.json();
+        if (nData) {
+          notesList = Array.isArray(nData) ? nData : Object.values(nData);
+          localStorage.setItem('ctet_admin_notes', JSON.stringify(notesList));
+        }
+
+        const tRes = await fetch(FIREBASE_BASE_URL + '/timers.json');
+        const tData = await tRes.json();
+        if (tData) {
+          testTimersMap = tData;
+          localStorage.setItem('ctet_admin_timers', JSON.stringify(testTimersMap));
+        }
+
+        updateStatsUI();
+        updateSubjectDropdowns();
+        renderSubjectCards();
+        renderAllChaptersList();
+      } catch (err) {
+        console.warn('Sync offline or waiting:', err);
+      }
+    }
+
+    async function saveAppDataToCloud() {
+      try { localStorage.setItem('ctet_admin_app_data', JSON.stringify(APP_DATA)); } catch(e) {}
+      try {
+        await fetch(FIREBASE_BASE_URL + '/app_data.json', {
+          method: 'PUT',
+          body: JSON.stringify(APP_DATA)
+        });
+      } catch(e) {}
+    }
+
+    async function saveQuestionsToCloud() {
+      try { localStorage.setItem('ctet_admin_questions', JSON.stringify(questionsList)); } catch(e) {}
+      updateStatsUI();
+      try {
+        await fetch(FIREBASE_BASE_URL + '/questions.json', {
+          method: 'PUT',
+          body: JSON.stringify(questionsList)
+        });
+      } catch(err) {}
+    }
+
+    async function saveNotesToCloud() {
+      try { localStorage.setItem('ctet_admin_notes', JSON.stringify(notesList)); } catch(e) {}
+      updateStatsUI();
+      try {
+        await fetch(FIREBASE_BASE_URL + '/notes.json', {
+          method: 'PUT',
+          body: JSON.stringify(notesList)
+        });
+      } catch(err) {}
+    }
+
+    async function saveTimersToCloud() {
+      try { localStorage.setItem('ctet_admin_timers', JSON.stringify(testTimersMap)); } catch(e) {}
+      try {
+        await fetch(FIREBASE_BASE_URL + '/timers.json', {
+          method: 'PUT',
+          body: JSON.stringify(testTimersMap)
+        });
+      } catch(err) {}
+    }
+
+    function updateStatsUI() {
+      const statQ = document.getElementById('statQuesCount');
+      const hubQ = document.getElementById('hubQCount');
+      const statN = document.getElementById('statNotesCount');
+      const statSub = document.getElementById('statSubjectCount');
+
+      const activeKeys = Object.keys(APP_DATA).filter(function(k) { return APP_DATA[k].isActive !== false; });
+      if (statSub) statSub.textContent = activeKeys.length;
+      if (statQ) statQ.textContent = questionsList.length;
+      if (hubQ) hubQ.textContent = questionsList.length;
+      if (statN) statN.textContent = notesList.length;
+    }
+
+    function openWorkspace(tabId, pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
       const hub = document.getElementById('moduleHub');
       const header = document.getElementById('workspaceHeader');
       const title = document.getElementById('activeWorkspaceTitle');
@@ -764,38 +838,35 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       if (header) header.classList.remove('hidden');
       if (title) title.textContent = workspaceTitles[tabId] || '';
 
-      const allTabs = ['tabStudentRecords', 'tabManageNotes', 'tabAddQ', 'tabPdfParser', 'tabBulkQ', 'tabAddSubject', 'tabAddChapter', 'tabManageQ'];
-      allTabs.forEach(t => {
+      const allTabs = ['tabAddQ', 'tabPdfParser', 'tabManageQ', 'tabProfileManagement', 'tabStudentRecords', 'tabManageNotes', 'tabAddSubject', 'tabAddChapter'];
+      allTabs.forEach(function(t) {
         const el = document.getElementById(t);
-        if (el) {
-          if (t === tabId) el.classList.remove('hidden');
-          else el.classList.add('hidden');
-        }
+        if (el) el.classList.toggle('hidden', t !== tabId);
       });
 
-      if (pushHistory) {
-        if (navHistory[navHistory.length - 1] !== tabId) {
-          navHistory.push(tabId);
-          window.history.pushState({ tabId }, '');
-        }
+      if (pushHistory && navHistory[navHistory.length - 1] !== tabId) {
+        navHistory.push(tabId);
+        window.history.pushState({ tabId: tabId }, '');
       }
 
       if (tabId === 'tabStudentRecords') renderStudentRecords();
+      if (tabId === 'tabProfileManagement') renderProfileManagement();
       if (tabId === 'tabManageNotes') renderNotesList();
       if (tabId === 'tabManageQ') renderQuestionsList();
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function openModuleHub(pushHistory = true) {
+    function openModuleHub(pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
       const hub = document.getElementById('moduleHub');
       const header = document.getElementById('workspaceHeader');
 
       if (hub) hub.classList.remove('hidden');
       if (header) header.classList.add('hidden');
 
-      const allTabs = ['tabStudentRecords', 'tabManageNotes', 'tabAddQ', 'tabPdfParser', 'tabBulkQ', 'tabAddSubject', 'tabAddChapter', 'tabManageQ'];
-      allTabs.forEach(t => {
+      const allTabs = ['tabAddQ', 'tabPdfParser', 'tabManageQ', 'tabProfileManagement', 'tabStudentRecords', 'tabManageNotes', 'tabAddSubject', 'tabAddChapter'];
+      allTabs.forEach(function(t) {
         const el = document.getElementById(t);
         if (el) el.classList.add('hidden');
       });
@@ -804,11 +875,9 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
         navHistory = ['hub'];
         window.history.pushState({ tabId: 'hub' }, '');
       }
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Connect to phone navigation buttons
     window.onpopstate = function(e) {
       if (e.state && e.state.tabId && e.state.tabId !== 'hub') {
         openWorkspace(e.state.tabId, false);
@@ -816,30 +885,6 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
         openModuleHub(false);
       }
     };
-
-    function saveAppData() {
-      try {
-        localStorage.setItem('ctet_admin_app_data', JSON.stringify(APP_DATA));
-      } catch(e) {}
-    }
-
-    function saveQuestions() {
-      try {
-        localStorage.setItem('ctet_admin_questions', JSON.stringify(questionsList));
-      } catch(e) {}
-      const statQ = document.getElementById('statQuesCount');
-      const hubQ = document.getElementById('hubQCount');
-      if (statQ) statQ.textContent = questionsList.length;
-      if (hubQ) hubQ.textContent = questionsList.length;
-    }
-
-    function saveNotes() {
-      try {
-        localStorage.setItem('ctet_admin_notes', JSON.stringify(notesList));
-      } catch(e) {}
-      const statN = document.getElementById('statNotesCount');
-      if (statN) statN.textContent = notesList.length;
-    }
 
     function extractChapterNum(name) {
       if (!name) return 9999;
@@ -849,90 +894,65 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
 
     function toggleDestinationFields() {
       const type = document.getElementById('qDestinationType').value;
-      const setRow = document.getElementById('fieldSetSelect');
-      const pyqRow = document.getElementById('fieldPyqSelect');
-      const chapRow = document.getElementById('fieldChapterSelect');
+      document.getElementById('fieldSetSelect').classList.toggle('hidden', type !== 'set');
+      document.getElementById('fieldPyqSelect').classList.toggle('hidden', type !== 'pyq');
+      document.getElementById('fieldChapterGroup').classList.toggle('hidden', type !== 'chapter');
 
-      setRow.classList.toggle('hidden', type !== 'set');
-      pyqRow.classList.toggle('hidden', type !== 'pyq');
-      chapRow.classList.toggle('hidden', type !== 'chapter');
+      if (type === 'chapter') {
+        updateUploadClassDropdown();
+      }
     }
 
-    function toggleParseDestinationFields() {
+    /* AUTO PARSE DESTINATION TOGGLE (CHAPTER OPTION ADDED) */
+    function toggleParseDest() {
       const type = document.getElementById('parseDestinationType').value;
-      const setRow = document.getElementById('parseFieldMock');
-      const pyqRow = document.getElementById('parseFieldPyq');
-      const chapRow = document.getElementById('parseFieldChapter');
+      document.getElementById('parseMockBox').classList.toggle('hidden', type !== 'set');
+      document.getElementById('parsePyqBox').classList.toggle('hidden', type !== 'pyq');
+      document.getElementById('parseChapterGroup').classList.toggle('hidden', type !== 'chapter');
 
-      setRow.classList.toggle('hidden', type !== 'set');
-      pyqRow.classList.toggle('hidden', type !== 'pyq');
-      chapRow.classList.toggle('hidden', type !== 'chapter');
+      if (type === 'chapter') {
+        updateParseClassDropdown();
+      }
     }
 
     function updateSubjectDropdowns() {
       const allKeys = Object.keys(APP_DATA);
-      const activeKeys = allKeys.filter(k => APP_DATA[k].isActive !== false);
+      const activeKeys = allKeys.filter(function(k) { return APP_DATA[k].isActive !== false; });
+      const activeOptsHtml = activeKeys.map(function(k) {
+        return '<option value="' + k + '">' + (APP_DATA[k].icon || '📚') + ' ' + APP_DATA[k].title + '</option>';
+      }).join('');
 
-      const activeOptsHtml = activeKeys.map(k => `<option value="${k}">${APP_DATA[k].icon || '📚'} ${APP_DATA[k].title}</option>`).join('');
-      const allOptsHtml = allKeys.map(k => `<option value="${k}">${APP_DATA[k].icon || '📚'} ${APP_DATA[k].title}</option>`).join('');
-
-      const statSub = document.getElementById('statSubjectCount');
-      if (statSub) statSub.textContent = activeKeys.length;
-
-      ['qSubject', 'qSetSubjectTag', 'qPyqSubjectTag', 'parseSubject', 'parseMockSubTag', 'parsePyqSubTag', 'chapSubjectSelect', 'noteSubject'].forEach(id => {
+      ['chapSubjectSelect', 'noteSubject', 'qSubject', 'parseSubject'].forEach(function(id) {
         const el = document.getElementById(id);
         if (el) el.innerHTML = activeOptsHtml;
       });
 
-      const filterSub = document.getElementById('filterSubject');
       const filterChapSub = document.getElementById('filterChapSubject');
-      if (filterSub) filterSub.innerHTML = `<option value="all">All Subjects</option>` + allOptsHtml;
-      if (filterChapSub) filterChapSub.innerHTML = `<option value="all">All Subjects</option>` + allOptsHtml;
+      if (filterChapSub) filterChapSub.innerHTML = '<option value="all">All Subjects</option>' + activeOptsHtml;
 
-      const clsSet = new Set([6, 7, 8]);
-      Object.values(APP_DATA).forEach(subj => {
-        if (subj.classes) Object.keys(subj.classes).forEach(c => clsSet.add(Number(c)));
+      updateNoteClassDropdown();
+      updateUploadClassDropdown();
+      updateParseClassDropdown();
+    }
+
+    function updateNoteClassDropdown() {
+      const subEl = document.getElementById('noteSubject');
+      const clsEl = document.getElementById('noteClass');
+      if (!subEl || !clsEl) return;
+
+      const sub = subEl.value;
+      const subData = APP_DATA[sub] || {};
+      const classKeys = Object.keys(subData.classes || {}).sort(function(a, b) {
+        const numA = parseInt(a), numB = parseInt(b);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return a.localeCompare(b);
       });
-      const classes = Array.from(clsSet).sort((a,b) => a - b);
-      const classOptsHtml = classes.map(c => `<option value="${c}">Class ${c}</option>`).join('');
 
-      ['qClass', 'parseClass', 'noteClass'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = classOptsHtml;
-      });
+      clsEl.innerHTML = classKeys.length === 0 
+        ? '<option value="General">General</option>'
+        : classKeys.map(function(c) { return '<option value="' + c + '">' + (isNaN(c) ? c : 'Class ' + c) + '</option>'; }).join('');
 
-      const filterChapCls = document.getElementById('filterChapClass');
-      if (filterChapCls) filterChapCls.innerHTML = `<option value="all">All Classes</option>` + classOptsHtml;
-
-      updateChapterDropdown();
-      updateParseChapterDropdown();
       updateNoteChapterDropdown();
-    }
-
-    function updateChapterDropdown() {
-      const subEl = document.getElementById('qSubject');
-      const clsEl = document.getElementById('qClass');
-      const chDropdown = document.getElementById('qChapter');
-      if (!subEl || !clsEl || !chDropdown) return;
-
-      const sub = subEl.value;
-      const cls = Number(clsEl.value);
-      let list = (APP_DATA[sub] && APP_DATA[sub].classes && APP_DATA[sub].classes[cls]) ? [...APP_DATA[sub].classes[cls]] : [];
-      list.sort((a, b) => extractChapterNum(a.name) - extractChapterNum(b.name));
-      chDropdown.innerHTML = list.length === 0 ? `<option value="gen_${sub}_${cls}">General Practice</option>` : list.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-    }
-
-    function updateParseChapterDropdown() {
-      const subEl = document.getElementById('parseSubject');
-      const clsEl = document.getElementById('parseClass');
-      const chDropdown = document.getElementById('parseChapter');
-      if (!subEl || !clsEl || !chDropdown) return;
-
-      const sub = subEl.value;
-      const cls = Number(clsEl.value);
-      let list = (APP_DATA[sub] && APP_DATA[sub].classes && APP_DATA[sub].classes[cls]) ? [...APP_DATA[sub].classes[cls]] : [];
-      list.sort((a, b) => extractChapterNum(a.name) - extractChapterNum(b.name));
-      chDropdown.innerHTML = list.length === 0 ? `<option value="gen_${sub}_${cls}">General Practice</option>` : list.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
 
     function updateNoteChapterDropdown() {
@@ -942,46 +962,183 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       if (!subEl || !clsEl || !chDropdown) return;
 
       const sub = subEl.value;
-      const cls = Number(clsEl.value);
-      let list = (APP_DATA[sub] && APP_DATA[sub].classes && APP_DATA[sub].classes[cls]) ? [...APP_DATA[sub].classes[cls]] : [];
-      list.sort((a, b) => extractChapterNum(a.name) - extractChapterNum(b.name));
-      chDropdown.innerHTML = list.length === 0 ? `<option value="gen_${sub}_${cls}">General Chapter</option>` : list.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      const cls = clsEl.value;
+      let list = (APP_DATA[sub] && APP_DATA[sub].classes && APP_DATA[sub].classes[cls]) ? APP_DATA[sub].classes[cls].slice() : [];
+      list.sort(function(a, b) { return extractChapterNum(a.name) - extractChapterNum(b.name); });
+      chDropdown.innerHTML = list.length === 0 
+        ? '<option value="gen_' + sub + '_' + cls + '">General Practice</option>'
+        : list.map(function(c) { return '<option value="' + c.id + '" data-name="' + c.name + '">' + c.name + '</option>'; }).join('');
     }
 
-    // Save Question with independent target type
-    function handleSaveQuestion(e) {
+    function updateUploadClassDropdown() {
+      const subEl = document.getElementById('qSubject');
+      const clsEl = document.getElementById('qClass');
+      if (!subEl || !clsEl) return;
+
+      const sub = subEl.value;
+      const subData = APP_DATA[sub] || {};
+      const classKeys = Object.keys(subData.classes || {}).sort(function(a, b) {
+        const numA = parseInt(a), numB = parseInt(b);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return a.localeCompare(b);
+      });
+
+      clsEl.innerHTML = classKeys.length === 0 
+        ? '<option value="General">General</option>'
+        : classKeys.map(function(c) { return '<option value="' + c + '">' + (isNaN(c) ? c : 'Class ' + c) + '</option>'; }).join('');
+
+      updateUploadChapterDropdown();
+    }
+
+    function updateUploadChapterDropdown() {
+      const subEl = document.getElementById('qSubject');
+      const clsEl = document.getElementById('qClass');
+      const chDropdown = document.getElementById('qChapter');
+      if (!subEl || !clsEl || !chDropdown) return;
+
+      const sub = subEl.value;
+      const cls = clsEl.value;
+      let list = (APP_DATA[sub] && APP_DATA[sub].classes && APP_DATA[sub].classes[cls]) ? APP_DATA[sub].classes[cls].slice() : [];
+      list.sort(function(a, b) { return extractChapterNum(a.name) - extractChapterNum(b.name); });
+      chDropdown.innerHTML = list.length === 0 
+        ? '<option value="gen_' + sub + '_' + cls + '">General Test</option>'
+        : list.map(function(c) { return '<option value="' + c.id + '" data-name="' + c.name + '">' + c.name + '</option>'; }).join('');
+    }
+
+    /* Auto Parse Class & Chapter Dropdown Sync */
+    function updateParseClassDropdown() {
+      const subEl = document.getElementById('parseSubject');
+      const clsEl = document.getElementById('parseClass');
+      if (!subEl || !clsEl) return;
+
+      const sub = subEl.value;
+      const subData = APP_DATA[sub] || {};
+      const classKeys = Object.keys(subData.classes || {}).sort(function(a, b) {
+        const numA = parseInt(a), numB = parseInt(b);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return a.localeCompare(b);
+      });
+
+      clsEl.innerHTML = classKeys.length === 0 
+        ? '<option value="General">General</option>'
+        : classKeys.map(function(c) { return '<option value="' + c + '">' + (isNaN(c) ? c : 'Class ' + c) + '</option>'; }).join('');
+
+      updateParseChapterDropdown();
+    }
+
+    function updateParseChapterDropdown() {
+      const subEl = document.getElementById('parseSubject');
+      const clsEl = document.getElementById('parseClass');
+      const chDropdown = document.getElementById('parseChapter');
+      if (!subEl || !clsEl || !chDropdown) return;
+
+      const sub = subEl.value;
+      const cls = clsEl.value;
+      let list = (APP_DATA[sub] && APP_DATA[sub].classes && APP_DATA[sub].classes[cls]) ? APP_DATA[sub].classes[cls].slice() : [];
+      list.sort(function(a, b) { return extractChapterNum(a.name) - extractChapterNum(b.name); });
+      chDropdown.innerHTML = list.length === 0 
+        ? '<option value="gen_' + sub + '_' + cls + '">General Test</option>'
+        : list.map(function(c) { return '<option value="' + c.id + '" data-name="' + c.name + '">' + c.name + '</option>'; }).join('');
+    }
+
+    async function handleSaveNote(e) {
+      e.preventDefault();
+      const sub = document.getElementById('noteSubject').value;
+      const cls = document.getElementById('noteClass').value;
+      const chSelect = document.getElementById('noteChapter');
+      const chId = chSelect.value;
+      const selectedOption = chSelect.options[chSelect.selectedIndex];
+      const autoTitle = selectedOption ? (selectedOption.getAttribute('data-name') || selectedOption.textContent) : 'Chapter Note';
+      let rawPdfUrl = document.getElementById('notePdfUrl').value.trim();
+
+      const driveMatch = rawPdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (driveMatch && driveMatch[1]) {
+        rawPdfUrl = 'https://drive.google.com/file/d/' + driveMatch[1] + '/preview';
+      }
+
+      notesList.unshift({
+        id: 'note_' + Date.now(),
+        subject: sub,
+        class: cls,
+        chapterId: chId,
+        title: autoTitle,
+        pdfUrl: rawPdfUrl,
+        date: new Date().toLocaleDateString('en-IN')
+      });
+
+      await saveNotesToCloud();
+      renderNotesList();
+      alert('PDF Note Cloud me save ho gaya!');
+      document.getElementById('notePdfUrl').value = '';
+    }
+
+    function renderNotesList() {
+      const cont = document.getElementById('notesCardsList');
+      if (!cont) return;
+      if (notesList.length === 0) {
+        cont.innerHTML = '<div class="p-6 text-center text-xs text-slate-400">Abhi koi PDF notes add nahi hain.</div>';
+        return;
+      }
+
+      cont.innerHTML = notesList.map(function(n, i) {
+        return '<div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">' +
+               '<div><div class="flex items-center gap-2 mb-1">' +
+               '<span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">' + n.subject + '</span>' +
+               '<span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-semibold">' + (isNaN(n.class) ? n.class : 'Class ' + n.class) + '</span></div>' +
+               '<b class="text-slate-800 text-sm block">' + n.title + '</b>' +
+               '<span class="text-[10px] text-slate-500 font-mono">PDF URL: ' + n.pdfUrl + '</span></div>' +
+               '<button onclick="deleteNote(' + i + ')" class="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-100 border border-rose-200 rounded-lg">Delete</button></div>';
+      }).join('');
+    }
+
+    async function deleteNote(index) {
+      if (confirm('Is PDF Note ko cloud se delete karein?')) {
+        notesList.splice(index, 1);
+        await saveNotesToCloud();
+        renderNotesList();
+      }
+    }
+
+    async function handleSaveQuestion(e) {
       e.preventDefault();
       const destType = document.getElementById('qDestinationType').value;
-      let finalTargetType = 'chapter';
+      const customMins = parseInt(document.getElementById('qCustomTimer').value) || 25;
+
+      let finalTargetType = 'set';
       let finalMockSet = null;
       let finalYear = null;
-      let finalSub = 'History';
-      let finalCls = null;
-      let finalChId = null;
+      let finalSubject = 'SST';
+      let finalClassNum = '';
+      let finalChapterId = '';
+      let timerKey = '';
 
       if (destType === 'set') {
         finalTargetType = 'set';
         finalMockSet = parseInt(document.getElementById('qMockSetNum').value);
-        finalSub = document.getElementById('qSetSubjectTag').value || 'SST';
+        timerKey = 'mockset_' + finalMockSet;
       } else if (destType === 'pyq') {
         finalTargetType = 'pyq';
         finalYear = document.getElementById('qPyqYear').value;
-        finalSub = document.getElementById('qPyqSubjectTag').value || 'SST';
+        timerKey = 'pyq_' + finalYear;
       } else {
         finalTargetType = 'chapter';
-        finalSub = document.getElementById('qSubject').value;
-        finalCls = Number(document.getElementById('qClass').value);
-        finalChId = document.getElementById('qChapter').value;
+        finalSubject = document.getElementById('qSubject').value;
+        finalClassNum = document.getElementById('qClass').value;
+        finalChapterId = document.getElementById('qChapter').value;
+        timerKey = 'chapter_' + finalChapterId;
       }
 
+      testTimersMap[timerKey] = customMins;
+      saveTimersToCloud();
+
       const qObj = {
-        id: 'q_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+        id: 'q_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
         targetType: finalTargetType,
         mockSet: finalMockSet,
         year: finalYear,
-        subject: finalSub,
-        class: finalCls,
-        chapterId: finalChId,
+        subject: finalSubject,
+        class: finalClassNum,
+        chapterId: finalChapterId,
         text: document.getElementById('qText').value.trim(),
         options: [
           document.getElementById('qOptA').value.trim(),
@@ -995,11 +1152,10 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       };
 
       questionsList.push(qObj);
-      saveQuestions();
+      await saveQuestionsToCloud();
       renderQuestionsList();
 
-      alert(`Sawal safalta-purvak ${finalTargetType === 'set' ? `Mock Set ${finalMockSet}` : finalTargetType === 'pyq' ? `PYQ ${finalYear}` : 'Chapter'} me add ho gaya hai!`);
-      
+      alert('Question safalta-purvak Cloud me save ho gaya!');
       document.getElementById('qText').value = '';
       document.getElementById('qOptA').value = '';
       document.getElementById('qOptB').value = '';
@@ -1008,42 +1164,47 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       document.getElementById('qExplanation').value = '';
     }
 
-    // Auto Parse with CTET Multiline Statement Support
     function handleParseRawText() {
       const text = document.getElementById('rawPdfTextInput').value.trim();
       if (!text) return alert('Kripya questions ka raw text paste karein.');
 
       const destType = document.getElementById('parseDestinationType').value;
-      let finalTargetType = 'chapter';
+      const customMins = parseInt(document.getElementById('parseTimerMinutes').value) || 25;
+      let finalTargetType = 'set';
       let finalMockSet = null;
       let finalYear = null;
-      let finalSub = 'History';
-      let finalCls = null;
-      let finalChId = null;
+      let finalSubject = 'SST';
+      let finalClassNum = '';
+      let finalChapterId = '';
+      let timerKey = '';
 
       if (destType === 'set') {
         finalTargetType = 'set';
         finalMockSet = parseInt(document.getElementById('parseMockSetNum').value);
-        finalSub = document.getElementById('parseMockSubTag').value || 'SST';
+        timerKey = 'mockset_' + finalMockSet;
       } else if (destType === 'pyq') {
         finalTargetType = 'pyq';
         finalYear = document.getElementById('parsePyqYear').value;
-        finalSub = document.getElementById('parsePyqSubTag').value || 'SST';
+        timerKey = 'pyq_' + finalYear;
       } else {
         finalTargetType = 'chapter';
-        finalSub = document.getElementById('parseSubject').value;
-        finalCls = Number(document.getElementById('parseClass').value);
-        finalChId = document.getElementById('parseChapter').value;
+        finalSubject = document.getElementById('parseSubject').value;
+        finalClassNum = document.getElementById('parseClass').value;
+        finalChapterId = document.getElementById('parseChapter').value;
+        timerKey = 'chapter_' + finalChapterId;
       }
 
-      // Split questions cleanly by Question markers: Q1., 1., Question 1
-      const blocks = text.split(/(?=(?:^|\n)\s*(?:\d+[\.\)]|Q\d+[\.\:\)]|Question\s*\d+))\s*/i).filter(b => b.trim().length > 10);
+      testTimersMap[timerKey] = customMins;
+      saveTimersToCloud();
+
+      const blocks = text.split(/(?=(?:^|\n)\s*(?:\d+[\.\)]|Q\d+[\.\:\)]|Question\s*\d+))\s*/i).filter(function(b) {
+        return b.trim().length > 10;
+      });
       parsedTempQuestions = [];
 
-      blocks.forEach((block, bIdx) => {
+      blocks.forEach(function(block, bIdx) {
         try {
-          const optMatches = [...block.matchAll(/(?:(?:\(([A-D])\)|([A-D])[\.\)])\s*)([^\n]+)/gi)];
-
+          const optMatches = Array.from(block.matchAll(/(?:(?:\(([A-D])\)|([A-D])[\.\)])\s*)([^\n]+)/gi));
           let correctIdx = 0;
           const ansMatch = block.match(/(?:Ans|Answer|उत्तर)\s*[:\-]?\s*\(?([A-D])/i);
           if (ansMatch) {
@@ -1051,6 +1212,10 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
             correctIdx = ['A', 'B', 'C', 'D'].indexOf(letter);
             if (correctIdx === -1) correctIdx = 0;
           }
+
+          let expText = 'NCERT Textbook Reference.';
+          const expMatch = block.match(/(?:Exp|Explanation|व्याख्या)\s*[:\-]?\s*([^\n]+(?:\n[^\n]+)*)/i);
+          if (expMatch) expText = expMatch[1].trim();
 
           if (optMatches.length >= 4) {
             const firstOptIndex = block.indexOf(optMatches[0][0]);
@@ -1062,9 +1227,9 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
               targetType: finalTargetType,
               mockSet: finalMockSet,
               year: finalYear,
-              subject: finalSub,
-              class: finalCls,
-              chapterId: finalChId,
+              subject: finalSubject,
+              class: finalClassNum,
+              chapterId: finalChapterId,
               text: qBody,
               options: [
                 optMatches[0][3].trim(),
@@ -1073,35 +1238,31 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
                 optMatches[3][3].trim()
               ],
               correctIndex: correctIdx,
-              explanation: 'NCERT Textbook Reference.',
+              explanation: expText,
               order: questionsList.length + bIdx + 1
             });
           }
-        } catch (err) {}
+        } catch(e) {}
       });
 
-      document.getElementById('parsedSummaryText').textContent = `✓ ${parsedTempQuestions.length} Questions successfully detected!`;
+      document.getElementById('parsedSummaryText').textContent = '✓ ' + parsedTempQuestions.length + ' Questions detected!';
       document.getElementById('parsedPreviewSection').classList.remove('hidden');
-      document.getElementById('parsedCardsContainer').innerHTML = parsedTempQuestions.map((q, i) => `
-        <div class="p-3 bg-white rounded-xl border border-slate-200 text-xs space-y-1.5">
-          <span class="font-bold text-indigo-700">Q${i+1}. [${q.targetType.toUpperCase()}]</span>
-          <p class="font-semibold text-slate-800 render-multiline">${q.text}</p>
-          <div class="grid grid-cols-2 gap-1 text-[11px] text-slate-600">
-            <div>(A) ${q.options[0]}</div>
-            <div>(B) ${q.options[1]}</div>
-            <div>(C) ${q.options[2]}</div>
-            <div>(D) ${q.options[3]}</div>
-          </div>
-          <span class="text-emerald-700 font-bold block text-[11px]">Correct: Option (${['A','B','C','D'][q.correctIndex]})</span>
-        </div>
-      `).join('');
+      document.getElementById('parsedCardsContainer').innerHTML = parsedTempQuestions.map(function(q, i) {
+        return '<div class="p-3 bg-white rounded-xl border border-slate-200 text-xs space-y-1">' +
+               '<span class="font-bold text-indigo-700">Q' + (i + 1) + '</span>' +
+               '<p class="font-semibold text-slate-800 render-multiline">' + q.text + '</p>' +
+               '<div class="grid grid-cols-2 gap-1 text-[11px] text-slate-600">' +
+               '<div>(A) ' + q.options[0] + '</div><div>(B) ' + q.options[1] + '</div>' +
+               '<div>(C) ' + q.options[2] + '</div><div>(D) ' + q.options[3] + '</div></div>' +
+               '<span class="text-emerald-700 font-bold block text-[11px]">Correct: (' + ['A','B','C','D'][q.correctIndex] + ')</span></div>';
+      }).join('');
     }
 
-    function uploadParsedQuestions() {
-      questionsList = [...questionsList, ...parsedTempQuestions];
-      saveQuestions();
+    async function uploadParsedQuestions() {
+      questionsList = questionsList.concat(parsedTempQuestions);
+      await saveQuestionsToCloud();
       renderQuestionsList();
-      alert(`${parsedTempQuestions.length} Questions safalta-purvak add ho gaye!`);
+      alert(parsedTempQuestions.length + ' Questions cloud par save ho gaye!');
       parsedTempQuestions = [];
       document.getElementById('rawPdfTextInput').value = '';
       document.getElementById('parsedPreviewSection').classList.add('hidden');
@@ -1112,264 +1273,259 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       const searchEl = document.getElementById('searchQText');
       const search = (searchEl ? searchEl.value : '').toLowerCase();
       const targetGroup = document.getElementById('filterTargetGroup') ? document.getElementById('filterTargetGroup').value : 'all';
-      const sub = document.getElementById('filterSubject') ? document.getElementById('filterSubject').value : 'all';
 
-      const filtered = questionsList.filter(q => {
-        const matchSearch = (q.text || '').toLowerCase().includes(search);
+      const filtered = questionsList.filter(function(q) {
+        const matchSearch = (q.text || '').toLowerCase().indexOf(search) !== -1;
         const matchTarget = targetGroup === 'all' || q.targetType === targetGroup;
-        const matchSub = sub === 'all' || q.subject === sub;
-        return matchSearch && matchTarget && matchSub;
+        return matchSearch && matchTarget;
       });
 
       const cont = document.getElementById('questionsContainer');
       if (!cont) return;
 
       if (filtered.length === 0) {
-        cont.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">No questions found matching criteria.</div>`;
+        cont.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Koi questions nahi mile.</div>';
         return;
       }
 
-      cont.innerHTML = filtered.map((q, idx) => {
+      cont.innerHTML = filtered.map(function(q, idx) {
         let tagBadge = '';
-        if (q.targetType === 'set') tagBadge = `<span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px]">Mock Set ${q.mockSet}</span>`;
-        else if (q.targetType === 'pyq') tagBadge = `<span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]">PYQ ${q.year}</span>`;
-        else tagBadge = `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">Chapter Practice (Class ${q.class})</span>`;
+        if (q.targetType === 'set') {
+          tagBadge = '<span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px]">Mock Set ' + q.mockSet + '</span>';
+        } else if (q.targetType === 'pyq') {
+          tagBadge = '<span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-bold text-[10px]">PYQ ' + q.year + '</span>';
+        } else if (q.targetType === 'chapter') {
+          tagBadge = '<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">' + q.subject + ' • Class ' + q.class + '</span>';
+        }
 
-        return `
-          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 text-xs space-y-2">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                ${tagBadge}
-                <span class="text-slate-500 font-semibold">${q.subject || 'SST'}</span>
-              </div>
-              <button onclick="deleteQuestion(${idx})" class="text-rose-600 font-bold hover:underline">Delete</button>
-            </div>
-            <p class="font-bold text-slate-800 render-multiline">${q.text}</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-slate-600">
-              <div>(A) ${q.options[0]}</div>
-              <div>(B) ${q.options[1]}</div>
-              <div>(C) ${q.options[2]}</div>
-              <div>(D) ${q.options[3]}</div>
-            </div>
-            <div class="text-emerald-700 font-semibold text-[11px]">Correct: (${['A','B','C','D'][q.correctIndex]}) ${q.options[q.correctIndex]}</div>
-          </div>
-        `;
+        return '<div class="p-4 rounded-xl border border-slate-200 bg-slate-50 text-xs space-y-2">' +
+               '<div class="flex items-center justify-between">' +
+               tagBadge +
+               '<button onclick="deleteQuestion(' + idx + ')" class="text-rose-600 font-bold hover:underline">Delete</button></div>' +
+               '<p class="font-bold text-slate-800 render-multiline">' + q.text + '</p>' +
+               '<div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-slate-600">' +
+               '<div>(A) ' + q.options[0] + '</div><div>(B) ' + q.options[1] + '</div>' +
+               '<div>(C) ' + q.options[2] + '</div><div>(D) ' + q.options[3] + '</div></div></div>';
       }).join('');
     }
 
-    function deleteQuestion(idx) {
-      if (confirm('Kya aap is prashn ko hatana chahte hain?')) {
-        questionsList.splice(idx, 1);
-        saveQuestions();
-        renderQuestionsList();
+    async function deleteQuestion(idx) {
+      if (!confirm('Kya aap is prashn ko Cloud se hatana chahte hain?')) return;
+      const targetQ = questionsList[idx];
+      questionsList.splice(idx, 1);
+      await saveQuestionsToCloud();
+
+      if (targetQ) {
+        let remaining = 0;
+        let testKey = '';
+        if (targetQ.targetType === 'set') {
+          remaining = questionsList.filter(function(q) { return Number(q.mockSet) === Number(targetQ.mockSet); }).length;
+          testKey = 'mockset_' + targetQ.mockSet;
+        } else if (targetQ.targetType === 'pyq') {
+          remaining = questionsList.filter(function(q) { return String(q.year) === String(targetQ.year); }).length;
+          testKey = 'pyq_' + targetQ.year;
+        } else if (targetQ.targetType === 'chapter') {
+          remaining = questionsList.filter(function(q) { return q.chapterId === targetQ.chapterId; }).length;
+          testKey = 'chapter_' + targetQ.chapterId;
+        }
+
+        if (remaining === 0 && testKey) {
+          try {
+            const completed = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
+            if (completed[testKey]) {
+              delete completed[testKey];
+              localStorage.setItem('ctet_completed_tests', JSON.stringify(completed));
+            }
+          } catch(e) {}
+        }
       }
+
+      renderQuestionsList();
     }
 
-    function handleDeleteAllQuestions() {
-      if (confirm('Khatra: Saare prashn delete ho jayenge. Confirm karein?')) {
+    async function handleDeleteAllQuestions() {
+      if (confirm('Khatra: Saare prashn Cloud se delete ho jayenge. Confirm karein?')) {
         questionsList = [];
-        saveQuestions();
+        await saveQuestionsToCloud();
+        try { localStorage.removeItem('ctet_completed_tests'); } catch(e) {}
         renderQuestionsList();
       }
     }
 
-    function handleBulkUpload() {
-      const val = document.getElementById('bulkJsonInput').value.trim();
-      if (!val) return alert('Kripya JSON data paste karein.');
+    function renderProfileManagement() {
+      let profile = { name: "Student", email: "student@example.com", mobile: "N/A", photo: "" };
+      let completedTests = {};
       try {
-        const arr = JSON.parse(val);
-        if (!Array.isArray(arr)) return alert('JSON Array hona zaroori hai.');
-        questionsList = [...questionsList, ...arr];
-        saveQuestions();
-        renderQuestionsList();
-        alert(`${arr.length} Questions upload ho gaye!`);
-        document.getElementById('bulkJsonInput').value = '';
-      } catch (e) {
-        alert('Galat JSON syntax: ' + e.message);
-      }
-    }
+        profile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{}');
+        completedTests = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
+      } catch(e) {}
 
-    function handleSaveNote(e) {
-      e.preventDefault();
-      const sub = document.getElementById('noteSubject').value;
-      const cls = Number(document.getElementById('noteClass').value);
-      const chId = document.getElementById('noteChapter').value;
-      const title = document.getElementById('noteTitle').value.trim();
-      let rawPdfUrl = document.getElementById('notePdfUrl').value.trim();
+      document.getElementById('adminStudentName').textContent = profile.name || 'Student Name';
+      document.getElementById('adminStudentEmail').textContent = 'Email: ' + (profile.email || '—');
+      document.getElementById('adminStudentMobile').textContent = 'Mobile: ' + (profile.mobile || '—');
 
-      const driveMatch = rawPdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-      if (driveMatch && driveMatch[1]) {
-        rawPdfUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+      const imgEl = document.getElementById('adminProfileImg');
+      const placeholderEl = document.getElementById('adminProfileImgPlaceholder');
+      if (profile.photo) {
+        imgEl.src = profile.photo;
+        imgEl.classList.remove('hidden');
+        placeholderEl.classList.add('hidden');
+      } else {
+        imgEl.classList.add('hidden');
+        placeholderEl.classList.remove('hidden');
       }
 
-      notesList.unshift({
-        id: 'note_' + Date.now(),
-        subject: sub,
-        class: cls,
-        chapterId: chId,
-        title: title,
-        pdfUrl: rawPdfUrl,
-        date: new Date().toLocaleDateString('en-IN')
+      const setsCont = document.getElementById('adminSetsHistoryList');
+      const pyqCont = document.getElementById('adminPyqHistoryList');
+      const chapCont = document.getElementById('adminChapterHistoryList');
+
+      let setsHtml = '', pyqHtml = '', chapHtml = '';
+
+      Object.keys(completedTests).forEach(function(k) {
+        const item = completedTests[k];
+        const row = '<div class="p-2 bg-white rounded-lg border border-slate-200 flex justify-between">' +
+                    '<span class="font-semibold truncate max-w-[140px]">' + (item.testTitle || k) + '</span>' +
+                    '<strong class="text-indigo-700">' + item.score + '/' + item.total + ' (' + item.accuracy + '%)</strong></div>';
+
+        if (k.indexOf('mockset_') === 0) setsHtml += row;
+        else if (k.indexOf('pyq_') === 0) pyqHtml += row;
+        else chapHtml += row;
       });
-      saveNotes();
-      renderNotesList();
-      alert('PDF Note save ho gaya!');
-      document.getElementById('noteTitle').value = '';
-      document.getElementById('notePdfUrl').value = '';
-    }
 
-    function renderNotesList() {
-      const cont = document.getElementById('notesCardsList');
-      if (!cont) return;
-      if (notesList.length === 0) {
-        cont.innerHTML = '<div class="p-6 text-center text-xs text-slate-400">Abhi koi PDF notes add nahi hain.</div>';
-        return;
-      }
-
-      cont.innerHTML = notesList.map((n, i) => `
-        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">${n.subject}</span>
-              <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-semibold">Class ${n.class}</span>
-            </div>
-            <b class="text-slate-800 text-sm block">${n.title}</b>
-            <span class="text-[10px] text-slate-500 font-mono">PDF URL: ${n.pdfUrl}</span>
-          </div>
-          <button onclick="deleteNote(${i})" class="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-100 border border-rose-200 rounded-lg">Delete</button>
-        </div>
-      `).join('');
-    }
-
-    function deleteNote(index) {
-      if (confirm('Is PDF Note ko delete karein?')) {
-        notesList.splice(index, 1);
-        saveNotes();
-        renderNotesList();
-      }
+      setsCont.innerHTML = setsHtml || '<div class="text-slate-400">No mock sets taken.</div>';
+      pyqCont.innerHTML = pyqHtml || '<div class="text-slate-400">No PYQ taken.</div>';
+      chapCont.innerHTML = chapHtml || '<div class="text-slate-400">No chapter tests taken.</div>';
     }
 
     function renderStudentRecords() {
       const cont = document.getElementById('studentRecordsContainer');
       if (!cont) return;
 
-      let studentProfile = { name: "Student", email: "student@ctet.in" };
+      let studentProfile = {};
       let completedTests = {};
-
       try {
-        studentProfile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{"name":"Student","email":"student@ctet.in"}');
+        studentProfile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{}');
         completedTests = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
-      } catch (e) {}
+      } catch(e) {}
 
       const testKeys = Object.keys(completedTests);
       if (testKeys.length === 0) {
-        cont.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">Koi completed tests record nahi mile. Student ke test dene par yahan score card ready milega.</div>`;
+        cont.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Koi completed test nahi mila.</div>';
         return;
       }
 
-      cont.innerHTML = testKeys.map(k => {
+      cont.innerHTML = testKeys.map(function(k) {
         const item = completedTests[k];
-        const score = item.score !== undefined ? item.score : 0;
-        const total = item.total !== undefined ? item.total : 0;
-        const acc = item.accuracy !== undefined ? item.accuracy : (total > 0 ? Math.round((score/total)*100) : 0);
         const title = item.testTitle || k.toUpperCase();
 
-        return `
-          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="font-bold text-slate-800 text-sm">${studentProfile.name || 'Student'}</span>
-                <span class="text-slate-400 text-[11px]">(${studentProfile.email || 'No Email'})</span>
-              </div>
-              <b class="text-xs text-indigo-900 block">${title}</b>
-              <div class="flex items-center gap-3 mt-1.5 text-slate-600 font-medium">
-                <span>Score: <strong>${score} / ${total}</strong></span>
-                <span>Accuracy: <strong class="text-emerald-700 font-bold">${acc}%</strong></span>
-              </div>
-            </div>
-            <button onclick="downloadAdminScoreCard('${(studentProfile.name || 'Student').replace(/'/g, "\\'")}', '${(studentProfile.email || '').replace(/'/g, "\\'")}', '${title.replace(/'/g, "\\'")}', ${score}, ${total}, ${acc})" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition flex items-center gap-1.5">
-              <span>📥</span> <span>Download Official Score Card (PDF)</span>
-            </button>
-          </div>
-        `;
+        return '<div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">' +
+               '<div><b class="text-xs text-indigo-900 block">' + title + '</b>' +
+               '<div class="flex items-center gap-3 mt-1 text-slate-600 font-medium">' +
+               '<span>Score: <strong>' + item.score + ' / ' + item.total + '</strong></span>' +
+               '<span>Accuracy: <strong class="text-emerald-700 font-bold">' + item.accuracy + '%</strong></span></div></div>' +
+               '<button onclick="downloadCertifiedScoreCard(\'' + k + '\')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition flex items-center gap-1.5">' +
+               '<span>📥</span> <span>Print / Download Score Card</span></button></div>';
       }).join('');
     }
 
-    function downloadAdminScoreCard(name, email, testTitle, score, total, acc) {
-      document.getElementById('adminPdfName').textContent = name;
-      document.getElementById('adminPdfEmail').textContent = email || 'N/A';
-      document.getElementById('adminPdfTestTitle').textContent = testTitle;
-      document.getElementById('adminPdfDate').textContent = new Date().toLocaleString('en-IN');
-      document.getElementById('adminPdfTotal').textContent = `${score} / ${total}`;
-      document.getElementById('adminPdfCorrect').textContent = score;
-      document.getElementById('adminPdfWrong').textContent = Math.max(0, total - score);
-      document.getElementById('adminPdfAcc').textContent = `${acc}%`;
-      document.getElementById('adminPdfRecordId').textContent = Math.floor(1000 + Math.random() * 9000);
+    function downloadCertifiedScoreCard(testKey) {
+      let profile = {};
+      let completedTests = {};
+      try {
+        profile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{}');
+        completedTests = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
+      } catch(e) {}
+
+      const record = completedTests[testKey] || {};
+
+      document.getElementById('printCardName').textContent = profile.name || 'Student Candidate';
+      document.getElementById('printCardEmail').textContent = profile.email || 'N/A';
+      document.getElementById('printCardMobile').textContent = profile.mobile || 'N/A';
+      document.getElementById('printCardTestTitle').textContent = record.testTitle || testKey;
+      document.getElementById('printCardDate').textContent = record.timestamp ? new Date(record.timestamp).toLocaleString('en-IN') : new Date().toLocaleString('en-IN');
+      document.getElementById('printCardTotal').textContent = record.total || 0;
+      document.getElementById('printCardCorrect').textContent = record.score || 0;
+      document.getElementById('printCardWrong').textContent = Math.max(0, (record.total || 0) - (record.score || 0));
+      document.getElementById('printCardAcc').textContent = (record.accuracy || 0) + '%';
+      document.getElementById('printCardId').textContent = Math.floor(1000 + Math.random() * 9000);
+
+      const photoEl = document.getElementById('printCardPhoto');
+      const fallbackEl = document.getElementById('printCardPhotoFallback');
+      if (profile.photo) {
+        photoEl.src = profile.photo;
+        photoEl.classList.remove('hidden');
+        fallbackEl.classList.add('hidden');
+      } else {
+        photoEl.classList.add('hidden');
+        fallbackEl.classList.remove('hidden');
+      }
+
+      let setAttempts = 0, pyqAttempts = 0, chapAttempts = 0;
+      Object.keys(completedTests).forEach(function(k) {
+        if (k.indexOf('mockset_') === 0) setAttempts++;
+        else if (k.indexOf('pyq_') === 0) pyqAttempts++;
+        else chapAttempts++;
+      });
+
+      document.getElementById('printCardSetScore').textContent = 'Completed: ' + setAttempts;
+      document.getElementById('printCardPyqScore').textContent = 'Completed: ' + pyqAttempts;
+      document.getElementById('printCardChapterScore').textContent = 'Completed: ' + chapAttempts;
+
       window.print();
     }
 
     function renderSubjectCards() {
       const cont = document.getElementById('subjectCardsList');
       if (!cont) return;
-      cont.innerHTML = Object.entries(APP_DATA).map(([key, data]) => {
+      cont.innerHTML = Object.entries(APP_DATA).map(function(entry) {
+        const key = entry[0];
+        const data = entry[1];
         const isActive = data.isActive !== false;
-        return `
-          <div class="p-4 rounded-xl border ${isActive ? 'border-slate-200 bg-slate-50' : 'border-amber-200 bg-amber-50/40'} flex flex-col justify-between gap-3">
-            <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <span class="text-2xl">${data.icon || '📚'}</span>
-                <div>
-                  <b class="text-xs text-slate-800 block">${data.title}</b>
-                  <span class="text-[10px] text-slate-400">Key: ${key}</span>
-                </div>
-              </div>
-              <span class="px-2 py-0.5 text-[10px] font-bold rounded-full ${isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}">
-                ${isActive ? 'Active' : 'Deactivated'}
-              </span>
-            </div>
-            <div class="pt-2 border-t border-slate-200 flex items-center justify-between gap-2">
-              <button onclick="toggleSubjectActive('${key}', ${!isActive})" class="px-3 py-1 text-xs font-bold rounded-lg border transition ${isActive ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-600 text-white'}">
-                ${isActive ? 'Deactivate' : 'Activate'}
-              </button>
-              <button onclick="handleDeleteSubject('${key}')" class="px-2.5 py-1 text-xs font-bold rounded-lg text-rose-600 hover:bg-rose-100 border border-rose-200">
-                Delete
-              </button>
-            </div>
-          </div>
-        `;
+        return '<div class="p-4 rounded-xl border ' + (isActive ? 'border-slate-200 bg-slate-50' : 'border-amber-200 bg-amber-50/40') + ' flex flex-col justify-between gap-3">' +
+               '<div class="flex items-start justify-between gap-2">' +
+               '<div class="flex items-center gap-2"><span class="text-2xl">' + (data.icon || '📚') + '</span>' +
+               '<div><b class="text-xs text-slate-800 block">' + data.title + '</b>' +
+               '<span class="text-[10px] text-slate-400">Key: ' + key + '</span></div></div>' +
+               '<span class="px-2 py-0.5 text-[10px] font-bold rounded-full ' + (isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600') + '">' +
+               (isActive ? 'Active' : 'Deactivated') + '</span></div>' +
+               '<div class="pt-2 border-t border-slate-200 flex items-center justify-between gap-2">' +
+               '<button onclick="toggleSubjectActive(\'' + key + '\', ' + !isActive + ')" class="px-3 py-1 text-xs font-bold rounded-lg border transition ' +
+               (isActive ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-600 text-white') + '">' +
+               (isActive ? 'Deactivate' : 'Activate') + '</button>' +
+               '<button onclick="handleDeleteSubject(\'' + key + '\')" class="px-2.5 py-1 text-xs font-bold rounded-lg text-rose-600 hover:bg-rose-100 border border-rose-200">Delete</button></div></div>';
       }).join('');
     }
 
-    function toggleSubjectActive(key, activate) {
+    async function toggleSubjectActive(key, activate) {
       if (APP_DATA[key]) {
         APP_DATA[key].isActive = activate;
-        saveAppData();
+        await saveAppDataToCloud();
         updateSubjectDropdowns();
         renderSubjectCards();
       }
     }
 
-    function handleDeleteSubject(key) {
-      if (confirm(`Subject "${key}" ko delete karein?`)) {
+    async function handleDeleteSubject(key) {
+      if (confirm('Subject "' + key + '" ko delete karein?')) {
         delete APP_DATA[key];
-        saveAppData();
+        await saveAppDataToCloud();
         updateSubjectDropdowns();
         renderSubjectCards();
       }
     }
 
-    function handleSaveSubject(e) {
+    async function handleSaveSubject(e) {
       e.preventDefault();
       const key = document.getElementById('subKeyInput').value.trim().replace(/\s+/g, '_');
       const title = document.getElementById('subTitleInput').value.trim();
       const icon = document.getElementById('subIconInput').value.trim() || '📚';
       if (!key || !title) return;
 
-      APP_DATA[key] = { title, icon, isActive: true, classes: { 6: [], 7: [], 8: [] } };
-      saveAppData();
+      APP_DATA[key] = { title: title, icon: icon, isActive: true, classes: {} };
+      await saveAppDataToCloud();
       updateSubjectDropdowns();
       renderSubjectCards();
-      alert(`Subject "${title}" add ho gaya!`);
+      alert('Subject added to Cloud Database!');
       document.getElementById('subKeyInput').value = '';
       document.getElementById('subTitleInput').value = '';
     }
@@ -1378,38 +1534,31 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       const cont = document.getElementById('allChaptersList');
       if (!cont) return;
       const filterSub = document.getElementById('filterChapSubject') ? document.getElementById('filterChapSubject').value : 'all';
-      const filterCls = document.getElementById('filterChapClass') ? document.getElementById('filterChapClass').value : 'all';
 
       let totalCh = 0;
       let html = '';
 
-      Object.entries(APP_DATA).forEach(([subKey, subData]) => {
+      Object.entries(APP_DATA).forEach(function(entry) {
+        const subKey = entry[0];
+        const subData = entry[1];
         if (filterSub !== 'all' && subKey !== filterSub) return;
-        const classList = Object.keys(subData.classes || {}).map(Number).sort((a,b) => a - b);
+        const classList = Object.keys(subData.classes || {});
 
-        classList.forEach(cls => {
-          if (filterCls !== 'all' && String(cls) !== filterCls) return;
-          let list = (subData.classes && subData.classes[cls]) ? [...subData.classes[cls]] : [];
+        classList.forEach(function(cls) {
+          let list = (subData.classes && subData.classes[cls]) ? subData.classes[cls].slice() : [];
           totalCh += list.length;
-          list.sort((a, b) => extractChapterNum(a.name) - extractChapterNum(b.name));
+          list.sort(function(a, b) { return extractChapterNum(a.name) - extractChapterNum(b.name); });
 
-          list.forEach(ch => {
-            const qCount = questionsList.filter(q => q.chapterId === ch.id).length;
-            html += `
-              <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div class="flex-1 min-w-[240px]">
-                  <div class="flex items-center gap-2 mb-0.5">
-                    <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">${subKey}</span>
-                    <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-semibold">Class ${cls}</span>
-                    <span class="text-[11px] font-bold text-emerald-700">${qCount} Questions</span>
-                  </div>
-                  <b class="text-slate-800 text-sm block mt-1">${ch.name}</b>
-                </div>
-                <button onclick="handleDeleteChapter('${ch.id}', '${subKey}', ${cls})" class="px-2.5 py-1.5 bg-rose-50 text-rose-700 font-bold rounded-lg border border-rose-200">
-                  Delete
-                </button>
-              </div>
-            `;
+          list.forEach(function(ch) {
+            const qCount = questionsList.filter(function(q) { return q.chapterId === ch.id; }).length;
+            html += '<div class="p-3 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">' +
+                    '<div class="flex-1 min-w-[240px]">' +
+                    '<div class="flex items-center gap-2 mb-0.5">' +
+                    '<span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">' + subKey + '</span>' +
+                    '<span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-semibold">' + (isNaN(cls) ? cls : 'Class ' + cls) + '</span>' +
+                    '<span class="text-[11px] font-bold text-emerald-700">' + qCount + ' Questions</span></div>' +
+                    '<b class="text-slate-800 text-sm block mt-1">' + ch.name + '</b></div>' +
+                    '<button onclick="handleDeleteChapter(\'' + ch.id + '\', \'' + subKey + '\', \'' + cls + '\')" class="px-2.5 py-1.5 bg-rose-50 text-rose-700 font-bold rounded-lg border border-rose-200">Delete</button></div>';
           });
         });
       });
@@ -1419,41 +1568,42 @@ Ans: C" class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-
       cont.innerHTML = html || '<div class="p-6 text-center text-xs text-slate-400">Koi chapters nahi mile.</div>';
     }
 
-    function handleDeleteChapter(chId, subKey, cls) {
+    async function handleDeleteChapter(chId, subKey, cls) {
       if (confirm('Is chapter ko delete karein?')) {
         if (APP_DATA[subKey] && APP_DATA[subKey].classes && APP_DATA[subKey].classes[cls]) {
-          APP_DATA[subKey].classes[cls] = APP_DATA[subKey].classes[cls].filter(c => c.id !== chId);
-          saveAppData();
+          APP_DATA[subKey].classes[cls] = APP_DATA[subKey].classes[cls].filter(function(c) { return c.id !== chId; });
+          await saveAppDataToCloud();
           renderAllChaptersList();
         }
       }
     }
 
-    function handleSaveChapter(e) {
+    async function handleSaveChapter(e) {
       e.preventDefault();
       const sub = document.getElementById('chapSubjectSelect').value;
-      const cls = Number(document.getElementById('chapClassInput').value);
+      const cls = document.getElementById('chapClassInput').value.trim();
       const name = document.getElementById('chapNameInput').value.trim();
-      const newId = `custom_${sub.toLowerCase()}_${cls}_` + Date.now().toString().slice(-4);
+      const newId = 'custom_' + sub.toLowerCase() + '_' + cls.toLowerCase().replace(/\s+/g,'_') + '_' + Date.now().toString().slice(-4);
 
       if (!APP_DATA[sub].classes) APP_DATA[sub].classes = {};
       if (!APP_DATA[sub].classes[cls]) APP_DATA[sub].classes[cls] = [];
 
       APP_DATA[sub].classes[cls].push({ id: newId, name: name });
-      saveAppData();
+      await saveAppDataToCloud();
       renderAllChaptersList();
-      alert('Chapter safalta-purvak add ho gaya!');
+      updateSubjectDropdowns();
+      alert('Chapter / Class Cloud par add ho gaya!');
       document.getElementById('chapNameInput').value = '';
     }
 
-    window.onload = function() {
+    window.onload = async function() {
       try {
+        updateStatsUI();
         updateSubjectDropdowns();
         renderSubjectCards();
         renderAllChaptersList();
-        saveQuestions();
-        saveNotes();
-      } catch (err) {
+        await syncFromCloud();
+      } catch(err) {
         console.error("Init Error:", err);
       }
     };
