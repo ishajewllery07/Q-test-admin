@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GTEST ADMIN</title>
+  <title>GTET • Cloud Admin Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,41 +42,58 @@
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="openModuleHub()">
         <span class="p-2 bg-indigo-600 rounded-xl text-lg">⚙️</span>
         <div>
-          <h1 class="text-base md:text-lg font-bold leading-tight">GTET • Admin </h1>
-          <p class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
-            live now
+          <h1 class="text-base md:text-lg font-bold leading-tight">GTET.com Admin</h1>
+          <p class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1.5">
+            <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+            <span id="cloudStatusText">live now </span>
           </p>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <a href="Indexi.html" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
-          <span>Student Portal</span> <span>↗</span>
+        <button onclick="refreshAllFromCloud(true)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1 border border-slate-700">
+          <span>🔄 Sync Cloud</span>
+        </button>
+        <a href="Indexi.html" target="_blank" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+          <span>Student App</span> <span>↗</span>
         </a>
       </div>
     </div>
   </header>
 
+  <!-- Live Toast Notification Banner -->
+  <div id="liveAlertBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-indigo-500 flex items-start gap-3 transition-all duration-300 transform translate-y-0">
+    <span class="text-2xl">🔔</span>
+    <div class="flex-1 text-xs">
+      <b class="text-indigo-400 block text-sm mb-0.5" id="liveAlertTitle">New Student Activity!</b>
+      <p id="liveAlertMsg" class="text-slate-300">Ek naya score upload hua hai.</p>
+    </div>
+    <button onclick="closeLiveAlert()" class="text-slate-400 hover:text-white font-bold leading-none">✕</button>
+  </div>
+
   <!-- Main Container -->
   <main class="max-w-6xl w-full mx-auto px-4 py-5 space-y-5 flex-1">
 
     <!-- Overview Stats -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-500 block">Total Active Subjects</span>
-        <b id="statSubjectCount" class="text-2xl font-black text-slate-800">3</b>
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-500 block">Active Subjects</span>
+        <b id="statSubjectCount" class="text-xl font-black text-slate-800">3</b>
       </div>
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
         <span class="text-xs text-slate-500 block">Total Chapters</span>
-        <b id="statChapterCount" class="text-2xl font-black text-slate-800">0</b>
+        <b id="statChapterCount" class="text-xl font-black text-slate-800">0</b>
       </div>
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-500 block">Total Questions (Cloud)</span>
-        <b id="statQuesCount" class="text-2xl font-black text-emerald-600">0</b>
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-500 block">Questions Bank</span>
+        <b id="statQuesCount" class="text-xl font-black text-emerald-600">0</b>
       </div>
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-        <span class="text-xs text-slate-500 block">PDF Notes Uploaded</span>
-        <b id="statNotesCount" class="text-2xl font-black text-amber-600">0</b>
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+        <span class="text-xs text-slate-500 block">PDF Notes</span>
+        <b id="statNotesCount" class="text-xl font-black text-amber-600">0</b>
+      </div>
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm col-span-2 sm:col-span-1">
+        <span class="text-xs text-slate-500 block">Completed Tests</span>
+        <b id="statCompletedTestsCount" class="text-xl font-black text-indigo-600">0</b>
       </div>
     </div>
 
@@ -85,7 +102,7 @@
       <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
         <div>
           <h2 class="text-base font-bold text-slate-800">Admin Control Modules</h2>
-          <p class="text-xs text-slate-500">Kissi bhi section ko manage karne ke liye select karein</p>
+          <p class="text-xs text-slate-500">App aur Admin ka sara data cloud se synchronized hai</p>
         </div>
       </div>
 
@@ -95,19 +112,19 @@
           <div>
             <div class="w-11 h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">➕</div>
             <h3 class="font-bold text-slate-800 text-sm">Upload Question</h3>
-            <p class="text-xs text-slate-500 mt-1">Mock Set, PYQ ya Chapter me single sawal dalein with Custom Timer support[span_2](start_span)[span_2](end_span).</p>
+            <p class="text-xs text-slate-500 mt-1">Mock Set, PYQ ya Chapter me single sawal dalein with Custom Timer support.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-indigo-600">
             <span>Add Question</span> <span>→</span>
           </div>
         </div>
 
-        <!-- Module 2: Auto Parse CTET Questions -->
+        <!-- Module 2: Auto Parse Exam Questions -->
         <div onclick="openWorkspace('tabPdfParser')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
           <div>
             <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">⚡</div>
             <h3 class="font-bold text-slate-800 text-sm">Auto Parse Exam Questions</h3>
-            <p class="text-xs text-slate-500 mt-1">Mock Sets, PYQ ya Chapter wise bulk questions direct paste karke import karein[span_3](start_span)[span_3](end_span).</p>
+            <p class="text-xs text-slate-500 mt-1">Full papers, sets ya chapter wise bulk raw text ko automatic questions me convert karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
             <span>Auto Parse</span> <span>→</span>
@@ -119,7 +136,7 @@
           <div>
             <div class="w-11 h-11 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📋</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage Questions</h3>
-            <p class="text-xs text-slate-500 mt-1">Sets, PYQ aur Chapters ke sawal cloud database se search ya remove karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Sets, PYQ aur Chapters ke sawal cloud database se search, view ya remove karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700">
             <span>Questions Bank (<span id="hubQCount">0</span>)</span> <span>→</span>
@@ -130,11 +147,11 @@
         <div onclick="openWorkspace('tabProfileManagement')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-violet-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between group">
           <div>
             <div class="w-11 h-11 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">👤</div>
-            <h3 class="font-bold text-slate-800 text-sm">Profile Management</h3>
-            <p class="text-xs text-slate-500 mt-1">Student profile details aur test score history (SET, PYQ, Chapter) inspect karein.</p>
+            <h3 class="font-bold text-slate-800 text-sm">Student Profile & Scores</h3>
+            <p class="text-xs text-slate-500 mt-1">App me student jo profile aur marks upload karega wo yahan real-time live dikhega.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-violet-600">
-            <span>Open Profile Management</span> <span>→</span>
+            <span>View Live Profile</span> <span>→</span>
           </div>
         </div>
 
@@ -143,7 +160,7 @@
           <div>
             <div class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">🎓</div>
             <h3 class="font-bold text-slate-800 text-sm">Download Score Card (PDF)</h3>
-            <p class="text-xs text-slate-500 mt-1">1-Page Certified Score Card with photo, SET, PYQ & Chapter breakdown.</p>
+            <p class="text-xs text-slate-500 mt-1">Student ke completed tests ki verified marksheet download aur print karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-600">
             <span>Score Cards</span> <span>→</span>
@@ -155,7 +172,7 @@
           <div>
             <div class="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📑</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage PDF Notes</h3>
-            <p class="text-xs text-slate-500 mt-1">Chapter select karein, title auto-generate hoga aur Drive link save karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Chapter select karein aur Google Drive PDF link dalein, direct app me student ko dikhega.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-amber-600">
             <span>Manage Notes</span> <span>→</span>
@@ -167,7 +184,7 @@
           <div>
             <div class="w-11 h-11 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📚</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage Subjects</h3>
-            <p class="text-xs text-slate-500 mt-1">Naye subject (e.g. Human Geography) add karein ya status toggle karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Naye subjects add karein ya unhe enable/disable karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-purple-600">
             <span>Manage Subjects</span> <span>→</span>
@@ -179,7 +196,7 @@
           <div>
             <div class="w-11 h-11 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">📖</div>
             <h3 class="font-bold text-slate-800 text-sm">Manage Chapters & Classes</h3>
-            <p class="text-xs text-slate-500 mt-1">Class 6, 7, 8... 12 ya Graduation me naye chapters add karein.</p>
+            <p class="text-xs text-slate-500 mt-1">Class 6 se 12 ya custom class ke chapters banayein aur delete karein.</p>
           </div>
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-rose-600">
             <span>Manage Chapters</span> <span>→</span>
@@ -200,7 +217,7 @@
     <section id="tabAddQ" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       <div class="border-b border-slate-100 pb-3">
         <h2 class="text-base font-bold text-slate-800">Upload Question (Set / PYQ / Chapter)</h2>
-        <p class="text-xs text-slate-500">Chunein ki sawal Full Mock Set, PYQ Paper ya specific Chapter test me dalna hai[span_4](start_span)[span_4](end_span).</p>
+        <p class="text-xs text-slate-500">Chunein ki sawal Full Mock Set, PYQ Paper ya specific Chapter test me dalna hai.</p>
       </div>
 
       <form id="formAddQuestion" onsubmit="handleSaveQuestion(event)" class="space-y-4">
@@ -213,7 +230,6 @@
           </select>
         </div>
 
-        <!-- DYNAMIC CHAPTER SELECT FIELDS -->
         <div id="fieldChapterGroup" class="hidden bg-indigo-50/40 p-4 rounded-xl border border-indigo-100 grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Select Subject *</label>
@@ -260,38 +276,32 @@
 
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Test Duration / Timer (in Minutes) *</label>
-            <input type="number" id="qCustomTimer" required min="1" max="180" value="25" placeholder="Jaise: 25 ya 60" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500">
-            <p class="text-[10px] text-slate-400 mt-0.5">Admin jo time yahan set karega, test me wahi timer chalega.</p>
+            <input type="number" id="qCustomTimer" required min="1" max="180" value="25" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500">
+            <p class="text-[10px] text-slate-400 mt-0.5">Admin jo timer yahan set karega, app me student ko wahi timer milega.</p>
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">
-            Question & Statements (CTET Pattern Statement 1, 2, 3...) *
-          </label>
-          <textarea id="qText" rows="6" required placeholder="Jaise ki:
-Q1. वैदिक साहित्य के अध्ययन के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
-1. ऋग्वेद में मुख्यतः देवताओं की स्तुति में रचित सूक्त हैं।
-2. उत्तर वैदिक काल में कृषि का महत्व बढ़ा।
-सही विकल्प चुनिए।" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500"></textarea>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Question & Statements *</label>
+          <textarea id="qText" rows="5" required placeholder="Question yahan paste karein..." class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500"></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (A) *</label>
-            <textarea id="qOptA" rows="2" required placeholder="केवल 1" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptA" rows="2" required placeholder="Option A" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (B) *</label>
-            <textarea id="qOptB" rows="2" required placeholder="केवल 2" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptB" rows="2" required placeholder="Option B" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (C) *</label>
-            <textarea id="qOptC" rows="2" required placeholder="दोनों 1 और 2" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptC" rows="2" required placeholder="Option C" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Option (D) *</label>
-            <textarea id="qOptD" rows="2" required placeholder="कोई नहीं" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <textarea id="qOptD" rows="2" required placeholder="Option D" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
         </div>
 
@@ -306,8 +316,8 @@ Q1. वैदिक साहित्य के अध्ययन के स�
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Detailed Explanation (Exp:) *</label>
-            <textarea id="qExplanation" rows="2" placeholder="ऋग्वेद में देवताओं की स्तुति में रचित सूक्त हैं तथा उत्तर वैदिक काल में कृषि मुख्य पेशा बनी..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Detailed Explanation *</label>
+            <textarea id="qExplanation" rows="2" placeholder="Vyakhya yahan likhein..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium"></textarea>
           </div>
         </div>
 
@@ -319,11 +329,11 @@ Q1. वैदिक साहित्य के अध्ययन के स�
       </form>
     </section>
 
-    <!-- 2. AUTO PARSE EXAM QUESTIONS TAB (CHAPTER OPTION ADDED HERE) -->
+    <!-- 2. AUTO PARSE EXAM QUESTIONS TAB -->
     <section id="tabPdfParser" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       <div class="border-b border-slate-100 pb-3">
         <h2 class="text-base font-bold text-slate-800">⚡ Auto Parse Exam Questions</h2>
-        <p class="text-xs text-slate-500">Statement wale questions aur options text ko automatic parse karein[span_5](start_span)[span_5](end_span).</p>
+        <p class="text-xs text-slate-500">Pure paper ya practice text ko ek sath paste karke parse karein.</p>
       </div>
 
       <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 space-y-3">
@@ -371,7 +381,6 @@ Q1. वैदिक साहित्य के अध्ययन के स�
           </div>
         </div>
 
-        <!-- NEW: Auto Parse Chapter Selection Row -->
         <div id="parseChapterGroup" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-indigo-200">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Select Subject *</label>
@@ -390,13 +399,11 @@ Q1. वैदिक साहित्य के अध्ययन के स�
 
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Raw Exam Question Text:</label>
-        <textarea id="rawPdfTextInput" rows="8" placeholder="1. वैदिक साहित्य के संदर्भ में विचार कीजिए:
-1. ऋग्वेद में स्तुतियां हैं।
-2. कृषि का महत्व बढ़ा।
-(A) केवल 1
-(B) केवल 2
-(C) दोनों 1 और 2
-(D) कोई नहीं
+        <textarea id="rawPdfTextInput" rows="8" placeholder="1. क्वेश्चन टेक्स्ट...
+(A) ऑप्शन 1
+(B) ऑप्शन 2
+(C) ऑप्शन 3
+(D) ऑप्शन 4
 Ans: C
 Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500"></textarea>
       </div>
@@ -419,16 +426,16 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       </div>
     </section>
 
-    <!-- 3. PROFILE MANAGEMENT TAB -->
+    <!-- 3. STUDENT PROFILE & HISTORY MANAGEMENT (LIVE FIREBASE SYNC) -->
     <section id="tabProfileManagement" class="hidden space-y-4">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div>
-            <h2 class="text-base font-bold text-slate-800">👤 Student Profile & History Management</h2>
-            <p class="text-xs text-slate-500">Student ke profile data aur test score history ki full report.</p>
+            <h2 class="text-base font-bold text-slate-800">👤 Student Live Profile & Scores</h2>
+            <p class="text-xs text-slate-500">Student jo v app me fill ya submit karega wo yahan real-time live dikhega.</p>
           </div>
-          <button onclick="renderProfileManagement()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">
-            🔄 Refresh
+          <button onclick="syncStudentActivityFromCloud(true)" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">
+            🔄 Refresh From Cloud
           </button>
         </div>
 
@@ -438,24 +445,28 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
             <span id="adminProfileImgPlaceholder" class="text-2xl font-bold text-indigo-700">👤</span>
           </div>
           <div class="space-y-0.5 text-xs">
-            <h3 id="adminStudentName" class="text-sm font-bold text-slate-900">Student Name</h3>
+            <div class="flex items-center gap-2">
+              <h3 id="adminStudentName" class="text-sm font-bold text-slate-900">Not Uploaded Yet</h3>
+              <span id="adminProfileSyncTag" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600">Waiting for App</span>
+            </div>
             <p id="adminStudentEmail" class="text-slate-600">Email: —</p>
             <p id="adminStudentMobile" class="text-slate-600">Mobile: —</p>
+            <p id="adminProfileLastUpdated" class="text-[10px] text-slate-400">Last Synced: —</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div class="bg-indigo-50/50 p-3.5 rounded-xl border border-indigo-200 space-y-2">
             <span class="text-xs font-bold text-indigo-900 block border-b border-indigo-200 pb-1">Full Mock Sets Performance</span>
-            <div id="adminSetsHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+            <div id="adminSetsHistoryList" class="space-y-1.5 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
           </div>
           <div class="bg-purple-50/50 p-3.5 rounded-xl border border-purple-200 space-y-2">
             <span class="text-xs font-bold text-purple-900 block border-b border-purple-200 pb-1">PYQ Papers Performance</span>
-            <div id="adminPyqHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+            <div id="adminPyqHistoryList" class="space-y-1.5 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
           </div>
           <div class="bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-200 space-y-2">
             <span class="text-xs font-bold text-emerald-900 block border-b border-emerald-200 pb-1">Chapter Tests Performance</span>
-            <div id="adminChapterHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+            <div id="adminChapterHistoryList" class="space-y-1.5 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
           </div>
         </div>
       </div>
@@ -467,7 +478,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
             <h2 class="text-base font-bold text-slate-800">🎓 Certified Student Score Cards</h2>
-            <p class="text-xs text-slate-500">Official certified PDF score card generator.</p>
+            <p class="text-xs text-slate-500">Student ke sabhi completed tests ka official certificate generate karein.</p>
           </div>
           <button onclick="renderStudentRecords()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">
             🔄 Refresh Records
@@ -482,7 +493,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="border-b border-slate-100 pb-3">
           <h2 class="text-base font-bold text-slate-800">Add Chapter PDF Notes</h2>
-          <p class="text-xs text-slate-500">Subject aur Class select karein, title apne aap assign ho jayega.</p>
+          <p class="text-xs text-slate-500">Subject aur Class select karein, Google Drive embed URL Cloud me direct save hoga.</p>
         </div>
 
         <form id="formAddNote" onsubmit="handleSaveNote(event)" class="space-y-3">
@@ -550,7 +561,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="border-b border-slate-100 pb-3">
           <h2 class="text-base font-bold text-slate-800">Create New Subject</h2>
-          <p class="text-xs text-slate-500">Naye subject add karein, ye turant Cloud par save hoga.</p>
+          <p class="text-xs text-slate-500">Naye subject add karein, ye turant Firebase Cloud par update hoga.</p>
         </div>
 
         <form id="formAddSubject" onsubmit="handleSaveSubject(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
@@ -628,7 +639,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
   <div id="adminPrintScoreCard" class="hidden bg-white text-slate-900 border-2 border-slate-800 p-6 rounded-xl">
     <div class="text-center border-b-2 border-indigo-900 pb-3 mb-3">
       <h1 class="text-xl font-black text-indigo-950 uppercase">CTET SST OFFICIAL SCORE CARD</h1>
-      <p class="text-[11px] font-semibold text-slate-600">Verified central Portal Record</p>
+      <p class="text-[11px] font-semibold text-slate-600">Verified Central Exam Control Portal Record</p>
     </div>
 
     <div class="flex items-center justify-between gap-4 p-3 bg-slate-50 rounded-xl border border-slate-300 mb-4 text-xs">
@@ -714,17 +725,20 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       }
     };
 
+    // State
     let APP_DATA = JSON.parse(localStorage.getItem('ctet_admin_app_data') || JSON.stringify(DEFAULT_APP_DATA));
     let questionsList = JSON.parse(localStorage.getItem('ctet_admin_questions') || '[]');
     let notesList = JSON.parse(localStorage.getItem('ctet_admin_notes') || '[]');
     let testTimersMap = JSON.parse(localStorage.getItem('ctet_admin_timers') || '{}');
+    let studentProfile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{"name":"","email":"","mobile":"","photo":""}');
+    let completedTestsMap = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
     let parsedTempQuestions = [];
 
     const workspaceTitles = {
       'tabAddQ': '➕ Upload Question (Set / PYQ / Chapter)',
       'tabPdfParser': '⚡ Auto Parse CTET Questions',
       'tabManageQ': '📋 Manage Questions Bank',
-      'tabProfileManagement': '👤 Profile & Test History Management',
+      'tabProfileManagement': '👤 Student Live Profile & Scores',
       'tabStudentRecords': '🎓 Student Score Cards',
       'tabManageNotes': '📑 Manage Chapter PDF Notes',
       'tabAddSubject': '📚 Manage Subjects',
@@ -733,9 +747,12 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
 
     let navHistory = ['hub'];
 
-    // CLOUD SYNC FUNCTIONS
-    async function syncFromCloud() {
+    /* -------------------------------------------------------------
+       TWO-WAY CLOUD SYNC & REALTIME LISTENERS
+       ------------------------------------------------------------- */
+    async function syncAdminDataFromCloud() {
       try {
+        // 1. App Data
         const appRes = await fetch(FIREBASE_BASE_URL + '/app_data.json');
         const appD = await appRes.json();
         if (appD && Object.keys(appD).length > 0) {
@@ -743,6 +760,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
           localStorage.setItem('ctet_admin_app_data', JSON.stringify(APP_DATA));
         }
 
+        // 2. Questions
         const qRes = await fetch(FIREBASE_BASE_URL + '/questions.json');
         const qData = await qRes.json();
         if (qData) {
@@ -750,6 +768,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
           localStorage.setItem('ctet_admin_questions', JSON.stringify(questionsList));
         }
 
+        // 3. Notes
         const nRes = await fetch(FIREBASE_BASE_URL + '/notes.json');
         const nData = await nRes.json();
         if (nData) {
@@ -757,22 +776,113 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
           localStorage.setItem('ctet_admin_notes', JSON.stringify(notesList));
         }
 
+        // 4. Timers
         const tRes = await fetch(FIREBASE_BASE_URL + '/timers.json');
         const tData = await tRes.json();
         if (tData) {
           testTimersMap = tData;
           localStorage.setItem('ctet_admin_timers', JSON.stringify(testTimersMap));
         }
-
-        updateStatsUI();
-        updateSubjectDropdowns();
-        renderSubjectCards();
-        renderAllChaptersList();
-      } catch (err) {
-        console.warn('Sync offline or waiting:', err);
+      } catch (e) {
+        console.warn('Admin core sync issue:', e);
       }
     }
 
+    async function syncStudentActivityFromCloud(notify) {
+      try {
+        // 1. Student Profile from Cloud
+        const pRes = await fetch(FIREBASE_BASE_URL + '/student_profile.json');
+        const pData = await pRes.json();
+        if (pData && (pData.name || pData.email || pData.photo)) {
+          studentProfile = pData;
+          localStorage.setItem('ctet_student_profile', JSON.stringify(studentProfile));
+        }
+
+        // 2. Completed Tests & Scores from Cloud
+        const cRes = await fetch(FIREBASE_BASE_URL + '/completed_tests.json');
+        const cData = await cRes.json();
+        if (cData) {
+          completedTestsMap = cData;
+          localStorage.setItem('ctet_completed_tests', JSON.stringify(completedTestsMap));
+        }
+
+        updateStatsUI();
+        renderProfileManagement();
+        renderStudentRecords();
+
+        if (notify) {
+          showLiveAlert('Sync Complete', 'Student profile aur score cloud se sync ho gaye.');
+        }
+      } catch (err) {
+        console.warn('Student sync issue:', err);
+      }
+    }
+
+    async function refreshAllFromCloud(manual) {
+      document.getElementById('cloudStatusText').textContent = 'Syncing...';
+      await syncAdminDataFromCloud();
+      await syncStudentActivityFromCloud(false);
+      updateStatsUI();
+      updateSubjectDropdowns();
+      renderSubjectCards();
+      renderAllChaptersList();
+      renderQuestionsList();
+      renderNotesList();
+      document.getElementById('cloudStatusText').textContent = 'Cloud Connected (Two-Way Live)';
+      if (manual) showLiveAlert('Cloud Refresh', 'Sabhi data successfully update ho gaya!');
+    }
+
+    /* REALTIME EVENT SOURCE LISTENER (Firebase Server-Sent Events) */
+    function initRealtimeCloudListeners() {
+      try {
+        // Listen for new completed test submissions by students
+        const testsEventSource = new EventSource(FIREBASE_BASE_URL + '/completed_tests.json');
+        testsEventSource.addEventListener('put', function(e) {
+          if (!e.data) return;
+          const payload = JSON.parse(e.data);
+          if (payload && payload.data) {
+            completedTestsMap = payload.path === '/' ? payload.data : Object.assign({}, completedTestsMap, payload.data);
+            localStorage.setItem('ctet_completed_tests', JSON.stringify(completedTestsMap));
+            updateStatsUI();
+            renderProfileManagement();
+            renderStudentRecords();
+            showLiveAlert('New Test Completed! 🎯', 'Student ne ek test submit kiya hai. Naya score live update ho gaya.');
+          }
+        });
+
+        // Listen for student profile updates
+        const profileEventSource = new EventSource(FIREBASE_BASE_URL + '/student_profile.json');
+        profileEventSource.addEventListener('put', function(e) {
+          if (!e.data) return;
+          const payload = JSON.parse(e.data);
+          if (payload && payload.data) {
+            studentProfile = payload.path === '/' ? payload.data : Object.assign({}, studentProfile, payload.data);
+            localStorage.setItem('ctet_student_profile', JSON.stringify(studentProfile));
+            renderProfileManagement();
+            renderStudentRecords();
+            showLiveAlert('Profile Updated! 👤', 'Student ne app me profile details update ki hain.');
+          }
+        });
+      } catch (err) {
+        console.warn('Realtime SSE listener not supported or blocked:', err);
+      }
+    }
+
+    function showLiveAlert(title, message) {
+      const banner = document.getElementById('liveAlertBanner');
+      document.getElementById('liveAlertTitle').textContent = title;
+      document.getElementById('liveAlertMsg').textContent = message;
+      banner.classList.remove('hidden');
+      setTimeout(function() {
+        banner.classList.add('hidden');
+      }, 5000);
+    }
+
+    function closeLiveAlert() {
+      document.getElementById('liveAlertBanner').classList.add('hidden');
+    }
+
+    /* CLOUD SAVE ROUTINES (ADMIN -> FIREBASE) */
     async function saveAppDataToCloud() {
       try { localStorage.setItem('ctet_admin_app_data', JSON.stringify(APP_DATA)); } catch(e) {}
       try {
@@ -820,12 +930,14 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       const hubQ = document.getElementById('hubQCount');
       const statN = document.getElementById('statNotesCount');
       const statSub = document.getElementById('statSubjectCount');
+      const statTests = document.getElementById('statCompletedTestsCount');
 
       const activeKeys = Object.keys(APP_DATA).filter(function(k) { return APP_DATA[k].isActive !== false; });
       if (statSub) statSub.textContent = activeKeys.length;
       if (statQ) statQ.textContent = questionsList.length;
       if (hubQ) hubQ.textContent = questionsList.length;
       if (statN) statN.textContent = notesList.length;
+      if (statTests) statTests.textContent = Object.keys(completedTestsMap || {}).length;
     }
 
     function openWorkspace(tabId, pushHistory) {
@@ -897,22 +1009,15 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       document.getElementById('fieldSetSelect').classList.toggle('hidden', type !== 'set');
       document.getElementById('fieldPyqSelect').classList.toggle('hidden', type !== 'pyq');
       document.getElementById('fieldChapterGroup').classList.toggle('hidden', type !== 'chapter');
-
-      if (type === 'chapter') {
-        updateUploadClassDropdown();
-      }
+      if (type === 'chapter') updateUploadClassDropdown();
     }
 
-    /* AUTO PARSE DESTINATION TOGGLE (CHAPTER OPTION ADDED) */
     function toggleParseDest() {
       const type = document.getElementById('parseDestinationType').value;
       document.getElementById('parseMockBox').classList.toggle('hidden', type !== 'set');
       document.getElementById('parsePyqBox').classList.toggle('hidden', type !== 'pyq');
       document.getElementById('parseChapterGroup').classList.toggle('hidden', type !== 'chapter');
-
-      if (type === 'chapter') {
-        updateParseClassDropdown();
-      }
+      if (type === 'chapter') updateParseClassDropdown();
     }
 
     function updateSubjectDropdowns() {
@@ -1005,7 +1110,6 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
         : list.map(function(c) { return '<option value="' + c.id + '" data-name="' + c.name + '">' + c.name + '</option>'; }).join('');
     }
 
-    /* Auto Parse Class & Chapter Dropdown Sync */
     function updateParseClassDropdown() {
       const subEl = document.getElementById('parseSubject');
       const clsEl = document.getElementById('parseClass');
@@ -1068,7 +1172,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
 
       await saveNotesToCloud();
       renderNotesList();
-      alert('PDF Note Cloud me save ho gaya!');
+      alert('PDF Note Cloud Database me live save ho gaya!');
       document.getElementById('notePdfUrl').value = '';
     }
 
@@ -1086,13 +1190,13 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
                '<span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">' + n.subject + '</span>' +
                '<span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-semibold">' + (isNaN(n.class) ? n.class : 'Class ' + n.class) + '</span></div>' +
                '<b class="text-slate-800 text-sm block">' + n.title + '</b>' +
-               '<span class="text-[10px] text-slate-500 font-mono">PDF URL: ' + n.pdfUrl + '</span></div>' +
+               '<span class="text-[10px] text-slate-500 font-mono">PDF: ' + n.pdfUrl + '</span></div>' +
                '<button onclick="deleteNote(' + i + ')" class="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-100 border border-rose-200 rounded-lg">Delete</button></div>';
       }).join('');
     }
 
     async function deleteNote(index) {
-      if (confirm('Is PDF Note ko cloud se delete karein?')) {
+      if (confirm('Is PDF Note ko cloud database se delete karein?')) {
         notesList.splice(index, 1);
         await saveNotesToCloud();
         renderNotesList();
@@ -1129,7 +1233,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       }
 
       testTimersMap[timerKey] = customMins;
-      saveTimersToCloud();
+      await saveTimersToCloud();
 
       const qObj = {
         id: 'q_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
@@ -1311,35 +1415,8 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
 
     async function deleteQuestion(idx) {
       if (!confirm('Kya aap is prashn ko Cloud se hatana chahte hain?')) return;
-      const targetQ = questionsList[idx];
       questionsList.splice(idx, 1);
       await saveQuestionsToCloud();
-
-      if (targetQ) {
-        let remaining = 0;
-        let testKey = '';
-        if (targetQ.targetType === 'set') {
-          remaining = questionsList.filter(function(q) { return Number(q.mockSet) === Number(targetQ.mockSet); }).length;
-          testKey = 'mockset_' + targetQ.mockSet;
-        } else if (targetQ.targetType === 'pyq') {
-          remaining = questionsList.filter(function(q) { return String(q.year) === String(targetQ.year); }).length;
-          testKey = 'pyq_' + targetQ.year;
-        } else if (targetQ.targetType === 'chapter') {
-          remaining = questionsList.filter(function(q) { return q.chapterId === targetQ.chapterId; }).length;
-          testKey = 'chapter_' + targetQ.chapterId;
-        }
-
-        if (remaining === 0 && testKey) {
-          try {
-            const completed = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
-            if (completed[testKey]) {
-              delete completed[testKey];
-              localStorage.setItem('ctet_completed_tests', JSON.stringify(completed));
-            }
-          } catch(e) {}
-        }
-      }
-
       renderQuestionsList();
     }
 
@@ -1347,32 +1424,44 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       if (confirm('Khatra: Saare prashn Cloud se delete ho jayenge. Confirm karein?')) {
         questionsList = [];
         await saveQuestionsToCloud();
-        try { localStorage.removeItem('ctet_completed_tests'); } catch(e) {}
         renderQuestionsList();
       }
     }
 
+    /* RENDER STUDENT PROFILE & LIVE SCORES */
     function renderProfileManagement() {
-      let profile = { name: "Student", email: "student@example.com", mobile: "N/A", photo: "" };
-      let completedTests = {};
-      try {
-        profile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{}');
-        completedTests = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
-      } catch(e) {}
+      const p = studentProfile || {};
+      const nameEl = document.getElementById('adminStudentName');
+      const emailEl = document.getElementById('adminStudentEmail');
+      const mobileEl = document.getElementById('adminStudentMobile');
+      const syncTag = document.getElementById('adminProfileSyncTag');
+      const lastUpEl = document.getElementById('adminProfileLastUpdated');
 
-      document.getElementById('adminStudentName').textContent = profile.name || 'Student Name';
-      document.getElementById('adminStudentEmail').textContent = 'Email: ' + (profile.email || '—');
-      document.getElementById('adminStudentMobile').textContent = 'Mobile: ' + (profile.mobile || '—');
+      if (p.name) {
+        nameEl.textContent = p.name;
+        emailEl.textContent = 'Email: ' + (p.email || '—');
+        mobileEl.textContent = 'Mobile: ' + (p.mobile || '—');
+        syncTag.textContent = 'Live Cloud Active';
+        syncTag.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800';
+        lastUpEl.textContent = 'Last Synced: ' + (p.updatedAt ? new Date(p.updatedAt).toLocaleString('en-IN') : 'Just Now');
+      } else {
+        nameEl.textContent = 'No Student Profile Yet';
+        emailEl.textContent = 'Email: —';
+        mobileEl.textContent = 'Mobile: —';
+        syncTag.textContent = 'Waiting for App';
+        syncTag.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600';
+      }
 
       const imgEl = document.getElementById('adminProfileImg');
       const placeholderEl = document.getElementById('adminProfileImgPlaceholder');
-      if (profile.photo) {
-        imgEl.src = profile.photo;
+      if (p.photo) {
+        imgEl.src = p.photo;
         imgEl.classList.remove('hidden');
         placeholderEl.classList.add('hidden');
       } else {
         imgEl.classList.add('hidden');
         placeholderEl.classList.remove('hidden');
+        placeholderEl.textContent = p.name ? p.name.charAt(0).toUpperCase() : '👤';
       }
 
       const setsCont = document.getElementById('adminSetsHistoryList');
@@ -1381,10 +1470,10 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
 
       let setsHtml = '', pyqHtml = '', chapHtml = '';
 
-      Object.keys(completedTests).forEach(function(k) {
-        const item = completedTests[k];
+      Object.keys(completedTestsMap || {}).forEach(function(k) {
+        const item = completedTestsMap[k];
         const row = '<div class="p-2 bg-white rounded-lg border border-slate-200 flex justify-between">' +
-                    '<span class="font-semibold truncate max-w-[140px]">' + (item.testTitle || k) + '</span>' +
+                    '<span class="font-semibold truncate max-w-[130px]">' + (item.testTitle || k) + '</span>' +
                     '<strong class="text-indigo-700">' + item.score + '/' + item.total + ' (' + item.accuracy + '%)</strong></div>';
 
         if (k.indexOf('mockset_') === 0) setsHtml += row;
@@ -1401,21 +1490,14 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       const cont = document.getElementById('studentRecordsContainer');
       if (!cont) return;
 
-      let studentProfile = {};
-      let completedTests = {};
-      try {
-        studentProfile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{}');
-        completedTests = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
-      } catch(e) {}
-
-      const testKeys = Object.keys(completedTests);
+      const testKeys = Object.keys(completedTestsMap || {});
       if (testKeys.length === 0) {
-        cont.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Koi completed test nahi mila.</div>';
+        cont.innerHTML = '<div class="p-8 text-center text-slate-400 text-xs">Student ne abhi tak koi test submit nahi kiya hai. App me test submit hote hi yahan dikhega.</div>';
         return;
       }
 
       cont.innerHTML = testKeys.map(function(k) {
-        const item = completedTests[k];
+        const item = completedTestsMap[k];
         const title = item.testTitle || k.toUpperCase();
 
         return '<div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs">' +
@@ -1429,18 +1511,12 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
     }
 
     function downloadCertifiedScoreCard(testKey) {
-      let profile = {};
-      let completedTests = {};
-      try {
-        profile = JSON.parse(localStorage.getItem('ctet_student_profile') || '{}');
-        completedTests = JSON.parse(localStorage.getItem('ctet_completed_tests') || '{}');
-      } catch(e) {}
+      const p = studentProfile || {};
+      const record = (completedTestsMap && completedTestsMap[testKey]) ? completedTestsMap[testKey] : {};
 
-      const record = completedTests[testKey] || {};
-
-      document.getElementById('printCardName').textContent = profile.name || 'Student Candidate';
-      document.getElementById('printCardEmail').textContent = profile.email || 'N/A';
-      document.getElementById('printCardMobile').textContent = profile.mobile || 'N/A';
+      document.getElementById('printCardName').textContent = p.name || 'Student Candidate';
+      document.getElementById('printCardEmail').textContent = p.email || 'N/A';
+      document.getElementById('printCardMobile').textContent = p.mobile || 'N/A';
       document.getElementById('printCardTestTitle').textContent = record.testTitle || testKey;
       document.getElementById('printCardDate').textContent = record.timestamp ? new Date(record.timestamp).toLocaleString('en-IN') : new Date().toLocaleString('en-IN');
       document.getElementById('printCardTotal').textContent = record.total || 0;
@@ -1451,8 +1527,8 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
 
       const photoEl = document.getElementById('printCardPhoto');
       const fallbackEl = document.getElementById('printCardPhotoFallback');
-      if (profile.photo) {
-        photoEl.src = profile.photo;
+      if (p.photo) {
+        photoEl.src = p.photo;
         photoEl.classList.remove('hidden');
         fallbackEl.classList.add('hidden');
       } else {
@@ -1461,7 +1537,7 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
       }
 
       let setAttempts = 0, pyqAttempts = 0, chapAttempts = 0;
-      Object.keys(completedTests).forEach(function(k) {
+      Object.keys(completedTestsMap || {}).forEach(function(k) {
         if (k.indexOf('mockset_') === 0) setAttempts++;
         else if (k.indexOf('pyq_') === 0) pyqAttempts++;
         else chapAttempts++;
@@ -1602,7 +1678,15 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
         updateSubjectDropdowns();
         renderSubjectCards();
         renderAllChaptersList();
-        await syncFromCloud();
+        renderNotesList();
+        renderQuestionsList();
+        renderProfileManagement();
+
+        // Initial Cloud Pull
+        await refreshAllFromCloud(false);
+
+        // Start Realtime Live Listeners for Student Profile & Score Updates
+        initRealtimeCloudListeners();
       } catch(err) {
         console.error("Init Error:", err);
       }
@@ -1610,3 +1694,4 @@ Exp: NCERT Reference..." class="w-full p-3 font-mono bg-slate-50 border border-s
   </script>
 </body>
 </html>
+ 
